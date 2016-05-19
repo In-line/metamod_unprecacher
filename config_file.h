@@ -37,11 +37,11 @@
 class config_file
 {
 public:
-    bool static cfgBlockSound;
-    void static LoadCfg(char *szPathToCfg);
+	bool static cfgBlockSound;
+	void static LoadCfg(char *szPathToCfg);
 private:
-    void static ResetAllVars();
-    static char* ParseCvar(char *szBuffer, char *szVarName);
+	void static ResetAllVars();
+	static char* ParseCvar(char *szBuffer, char *szVarName);
 };
 
 #endif // CONFIG_FILE_H
