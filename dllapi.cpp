@@ -42,7 +42,6 @@
 
 void PM_PlaySoundBlock( int channel, const char *sample, float volume, float attenuation, int fFlags, int pitch )
 {
-    UTIL_LogError(sample);
     return;
 }
 void pfnPM_Move ( struct playermove_s *ppmove, int server )
@@ -128,8 +127,7 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable,
 		return(FALSE);
 	}
 	else if(*interfaceVersion != INTERFACE_VERSION) {
-        UTIL_LogError("[Error] GetEntityAPI2 version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
-		//! Tell metamod what version we had, so it can figure out who is out of date.
+		UTIL_LogError("[Error] GetEntityAPI2 version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
 		*interfaceVersion = INTERFACE_VERSION;
 		return(FALSE);
 	}

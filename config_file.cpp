@@ -75,15 +75,12 @@ inline char* config_file::ParseCvar(char *szBuffer, char *szVarName)
     char* szStr = NULL;
     UTIL_LogError(szBuffer);
     szStr = strtok(szBuffer,"=");
-    UTIL_LogError(szStr);
     if(szStr == NULL || str_is_empty(szStr)) return false;
 
     if(( szStr =strstr(szBuffer,szVarName)) != NULL)
     {
-            UTIL_LogError(szStr);
             if((szStr = strtok (NULL, "=")) != NULL)
             {
-                UTIL_LogError(szStr);
                 trim(szStr);
                 if(!str_is_empty(szStr))
                 {

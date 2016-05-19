@@ -40,7 +40,7 @@ debug:
 default: all
 
 clean:
-	rm -rf bin/linux_release/*.o
-	rm -rf bin/linux_release/$(NAME)_mm_i386.so
-	rm -rf bin/linux_debug/*.o
-	rm -rf bin/linux_debug/$(NAME)_mm_i386.so
+	rm -rf linux_release/*.o
+	rm -rf linux_release/$(NAME)_mm_i386.so
+	rm -rf linux_debug/*.o
+	rm -rf linux_debug/$(NAME)_mm_i386.so

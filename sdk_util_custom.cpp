@@ -50,12 +50,29 @@ void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
     char* szFilePath = new char[strlen(GlobalVariables::g_szDLLDirPath) + 12 + 30 + 1];
     char* szLogFile = get_timestring("_%Y%m%d.log");
     sprintf(szFilePath, "%slogs/%s%s", (GlobalVariables::g_szDLLDirPath), szFileName, szLogFile);
-
     FILE* hFile = fopen(szFilePath, "a+");
-    fprintf(hFile, g_szLogString);
-    fclose(hFile);
     delete[] szFilePath;
     delete[] szLogFile;
+    if(hFile == NULL)
+    {
+      char szError[256];
+      sprintf(szError, "Error fopen: %s\n", strerror(errno));
+      SERVER_PRINT(szError);
+      clearerr(hFile);
+      return;
+    }
+    
+    fprintf(hFile, g_szLogString);
+    if(ferror(hFile))
+    {
+      char szError[256];
+      sprintf(szError, "Error fprintf: %s\n", strerror(errno));
+      SERVER_PRINT(szError);
+      clearerr(hFile);
+      return;
+    }
+    fclose(hFile);
+
 }
 
 char* UTIL_GetLog(const char *fmt, ...)
@@ -83,7 +100,7 @@ void UTIL_LogError(const char *fmt, ...)
     va_end   ( argptr );
 
     char*  szStr = UTIL_GetLog(g_szLogString);
-    sprintf(g_szLogString, szStr);
+    strcpy(g_szLogString, szStr);
     SERVER_PRINT(szStr);
     UTIL_LogToFile("error", g_szLogString);
     ALERT( at_error, szStr );
