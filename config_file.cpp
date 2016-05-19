@@ -37,57 +37,56 @@
 bool config_file::cfgBlockSound;
 void config_file::LoadCfg(char *szPathToCfg)
 {
-    ResetAllVars();
-    FILE* hFile = fopen(szPathToCfg,"r");
-    if(hFile == NULL)
-    {
-        UTIL_LogError("[Error] Cannot open config file %s", szPathToCfg);
-        return;
-    }
-    char szBuffer[256];
-    char *szValue = NULL;
-    while(!feof(hFile))
-    {
-        fgets(szBuffer,sizeof(szBuffer),hFile);
-        UTIL_RemoveComments(szBuffer);
-        trim(szBuffer);
+	ResetAllVars();
+	FILE* hFile = fopen(szPathToCfg,"r");
+	if(hFile == NULL)
+	{
+		UTIL_LogError("[Error] Cannot open config file %s", szPathToCfg);
+		return;
+	}
+	char szBuffer[256];
+	char *szValue = NULL;
+	while(!feof(hFile))
+	{
+		fgets(szBuffer,sizeof(szBuffer),hFile);
+		UTIL_RemoveComments(szBuffer);
+		trim(szBuffer);
 
-        if(!str_is_empty(szBuffer))
-        {
-            if((szValue = ParseCvar(szBuffer, "block_pm_move_sounds"))!=NULL)
-            {
-                    trim(szValue);
-                    if(strstr(szValue,"true"))
-                    config_file::cfgBlockSound = true;
-            }
-        }
-    }
-    fclose(hFile);
+		if(!str_is_empty(szBuffer))
+		{
+			if((szValue = ParseCvar(szBuffer, "block_pm_move_sounds"))!=NULL)
+			{
+				trim(szValue);
+				if(strstr(szValue,"true"))
+				config_file::cfgBlockSound = true;
+			}
+		}
+	}
+	fclose(hFile);
 }
 
 void config_file::ResetAllVars()
 {
-   config_file::cfgBlockSound = false;
+	config_file::cfgBlockSound = false;
 }
 
 inline char* config_file::ParseCvar(char *szBuffer, char *szVarName)
 {
-    char* szStr = NULL;
-    UTIL_LogError(szBuffer);
-    szStr = strtok(szBuffer,"=");
-    if(szStr == NULL || str_is_empty(szStr)) return false;
+	char* szStr = NULL;
+	UTIL_LogError(szBuffer);
+	szStr = strtok(szBuffer,"=");
+	if(szStr == NULL || str_is_empty(szStr)) return false;
 
-    if(( szStr =strstr(szBuffer,szVarName)) != NULL)
-    {
-            if((szStr = strtok (NULL, "=")) != NULL)
-            {
-                trim(szStr);
-                if(!str_is_empty(szStr))
-                {
-                    return szStr;
-                }
-            }
-
-    }
-    return NULL;
+	if(( szStr =strstr(szBuffer,szVarName)) != NULL)
+	{
+		if((szStr = strtok (NULL, "=")) != NULL)
+		{
+			trim(szStr);
+			if(!str_is_empty(szStr))
+			{
+				return szStr;
+			}
+		}
+	}
+	return NULL;
 }
