@@ -39,15 +39,15 @@
 
 void UTIL_LogPrintf( const char *fmt, ... )
 {
-    va_list			argptr;
+	va_list			argptr;
 
-    char szLogString[1024];
-    va_start ( argptr, fmt );
-    vsnprintf ( szLogString, sizeof(szLogString), fmt, argptr );
-    va_end   ( argptr );
+	char szLogString[1024];
+	va_start ( argptr, fmt );
+	vsnprintf ( szLogString, sizeof(szLogString), fmt, argptr );
+	va_end   ( argptr );
 
-    // Print to server console
-    ALERT( at_logged, szLogString );
+	// Print to server console
+	ALERT( at_logged, szLogString );
 }
 
 
