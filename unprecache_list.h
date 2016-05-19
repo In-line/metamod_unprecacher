@@ -38,20 +38,20 @@ using namespace std;
 class unprecache_list
 {
 public:
-    unprecache_list(char* szListFile);
-    virtual ~unprecache_list();
-    bool soundExists(const char *szSound);
-    bool modelExists(const char *szModel);
-    bool spriteExists(const char *szSprite);
+	unprecache_list(char* szListFile);
+	virtual ~unprecache_list();
+	bool soundExists(const char *szSound);
+	bool modelExists(const char *szModel);
+	bool spriteExists(const char *szSprite);
 
 private:
-    std::set<unprecache_list_string> *m_Lists[3];
-    std::set<unprecache_list_string>::iterator m_EndIterators[3];
-    char* m_szLastModel;
-    bool m_iLastResult;
+	std::set<unprecache_list_string> *m_Lists[3];
+	std::set<unprecache_list_string>::iterator m_EndIterators[3];
+	char* m_szLastModel;
+	bool m_iLastResult;
 
-    bool stringExists(const char *szString, short iIndex = 0);
-    void loadFromFile(char* szListFile);
+	bool stringExists(const char *szString, short iIndex = 0);
+	void loadFromFile(char* szListFile);
 
 };
 
