@@ -40,14 +40,14 @@ private:
 char* m_szString;
 static bool compare(char *szStr);
 public:
-    unprecache_list_string(char *szStr);
-    unprecache_list_string(const char *szStr);
-    //virtual ~unprecache_list_string();
-    unprecache_list_string();
-    bool operator<(const unprecache_list_string szS1) const;
+	unprecache_list_string(char *szStr);
+	unprecache_list_string(const char *szStr);
+	//virtual ~unprecache_list_string();
+	unprecache_list_string();
+	bool operator<(const unprecache_list_string szS1) const;
 
-    //operator char*() const;
-    char* c_str() const;
+	//operator char*() const;
+	char* c_str() const;
 };
 
 #endif // UNPRECACHE_LIST_STRING_H
