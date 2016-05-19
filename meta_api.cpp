@@ -30,9 +30,9 @@
  *
  */
 
-#include <extdll.h>			// always
+#include <extdll.h>					// always
 
-#include <meta_api.h>		// of course
+#include <meta_api.h>				// of course
 
 #include "sdk_util_custom.h"		// UTIL_LogPrintf, etc
 
@@ -60,32 +60,32 @@ static META_FUNCTIONS gMetaFunctionTable = {
 	NULL,			// pfnGetEntityAPI				HL SDK; called before game DLL
 	NULL,			// pfnGetEntityAPI_Post			META; called after game DLL
 	GetEntityAPI2,	// pfnGetEntityAPI2				HL SDK2; called before game DLL
-    NULL,			// pfnGetEntityAPI2_Post		META; called after game DLL
+	NULL,			// pfnGetEntityAPI2_Post		META; called after game DLL
 	NULL,			// pfnGetNewDLLFunctions		HL SDK2; called before game DLL
-    NULL,			// pfnGetNewDLLFunctions_Post	META; called after game DLL
+	NULL,			// pfnGetNewDLLFunctions_Post	META; called after game DLL
 	GetEngineFunctions,	// pfnGetEngineFunctions	META; called before HL engine
-    NULL,			// pfnGetEngineFunctions_Post	META; called after HL engine
+	NULL,			// pfnGetEngineFunctions_Post	META; called after HL engine
 };
 
 // Description of plugin
 plugin_info_t Plugin_info = {
-    META_INTERFACE_VERSION,
-    "Ultimate Unprecacher",
-    "0.2 Alpha",
-    "2016/05/18",
-    "Alik Aslanyan <cplusplus256@gmail.com>",
-    "http://www.metamod.org/",
-    "",
-    PT_ANYTIME,
-    PT_ANYTIME,
+	META_INTERFACE_VERSION,
+	"Ultimate Unprecacher",
+	"0.2 Alpha",
+	"2016/05/18",
+	"Alik Aslanyan <cplusplus256@gmail.com>",
+	"http://www.metamod.org/",
+	"",
+	PT_ANYTIME,
+	PT_ANYTIME,
 };
 
 meta_globals_t *gpMetaGlobals;
 gamedll_funcs_t *gpGamedllFuncs;
 mutil_funcs_t *gpMetaUtilFuncs;
 
-C_DLLEXPORT int Meta_Query(const char * /*ifvers */, plugin_info_t **pPlugInfo,
-		mutil_funcs_t *pMetaUtilFuncs) 
+C_DLLEXPORT int Meta_Query(const char * /*ifvers */, 
+		plugin_info_t **pPlugInfo, mutil_funcs_t *pMetaUtilFuncs) 
 {
 	// Give metamod our plugin_info struct
 	*pPlugInfo=&Plugin_info;
@@ -99,40 +99,40 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 		gamedll_funcs_t *pGamedllFuncs) 
 {
 	if(!pMGlobals) {
-        UTIL_LogError("[Error] Meta_Attach called with null pMGlobals");
+		UTIL_LogError("[Error] Meta_Attach called with null pMGlobals");
 		return(FALSE);
 	}
 	gpMetaGlobals=pMGlobals;
 	if(!pFunctionTable) {
-        UTIL_LogError("[Error] Meta_Attach called with null pFunctionTable");
+		UTIL_LogError("[Error] Meta_Attach called with null pFunctionTable");
 		return(FALSE);
 	}
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 	gpGamedllFuncs=pGamedllFuncs;
-    const char* szDLLPath = GET_PLUGIN_PATH(PLID);
-    GlobalVariables::g_szDLLDirPath = get_path((char*)szDLLPath);
-    unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
-    char* szPathToIni = new char[iDllDirPathLen + 29 + 1];
-    sprintf(szPathToIni,"%sconfig/unprecache_list.ini", GlobalVariables::g_szDLLDirPath);
-    GlobalVariables::g_ulUnprecacheList = new unprecache_list(szPathToIni);
+	const char* szDLLPath = GET_PLUGIN_PATH(PLID);
+	GlobalVariables::g_szDLLDirPath = get_path((char*)szDLLPath);
+	unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
+	char* szPathToIni = new char[iDllDirPathLen + 29 + 1];
+	sprintf(szPathToIni,"%sconfig/unprecache_list.ini", GlobalVariables::g_szDLLDirPath);
+	GlobalVariables::g_ulUnprecacheList = new unprecache_list(szPathToIni);
 
-    delete[] szPathToIni;
+	delete[] szPathToIni;
 
-    char* szPathToCfg = new char[iDllDirPathLen + 35 + 1];
-    sprintf(szPathToCfg,"%sconfig/unprecacher.cfg", GlobalVariables::g_szDLLDirPath);
-    config_file::LoadCfg(szPathToCfg);
-    delete[] szPathToCfg;
+	char* szPathToCfg = new char[iDllDirPathLen + 35 + 1];
+	sprintf(szPathToCfg,"%sconfig/unprecacher.cfg", GlobalVariables::g_szDLLDirPath);
+	config_file::LoadCfg(szPathToCfg);
+	delete[] szPathToCfg;
 
 
-    return(TRUE);
+	return(TRUE);
 }
 
 C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME,
-        PL_UNLOAD_REASON)
+		PL_UNLOAD_REASON)
 {
-    delete GlobalVariables::g_ulUnprecacheList;
-    delete[] GlobalVariables::g_szDLLDirPath;
-    //delete g_ulNotDeleteList;
+	delete GlobalVariables::g_ulUnprecacheList;
+	delete[] GlobalVariables::g_szDLLDirPath;
+	//delete g_ulNotDeleteList;
 	return(TRUE);
 }
 
