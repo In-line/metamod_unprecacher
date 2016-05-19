@@ -33,7 +33,7 @@
 #include <extdll.h>
 #include <meta_api.h>
 #include "osdep.h"
-#include "cstring_utils.cpp"
+#include "cstring_utils.h"
 #include "global_variables.h"
 #include <stdio.h>
 #include <iomanip>

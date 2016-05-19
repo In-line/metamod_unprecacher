@@ -132,7 +132,7 @@ char* get_timestring(char* sptemp)
         std::strftime(szDate, 511, sptemp, lt);
         return str_copy(szDate);
 }
-
+#ifdef _WIN32
 int vasprintf(char **strp, const char *fmt, va_list ap)
 {
     va_list ap1;
@@ -163,7 +163,7 @@ int asprintf(char **strp, const char *fmt, ...)
 
     return error;
 }
-
+#endif
 
 bool starts_with(const char* string, const char* prefix)
 {
