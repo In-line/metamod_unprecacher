@@ -34,51 +34,51 @@
 
 unprecache_list_string::unprecache_list_string(char *szStr)
 {
-    m_szString = szStr;
+	m_szString = szStr;
 }
 
 unprecache_list_string::unprecache_list_string(const char *szStr)
 {
-    m_szString = (char*) szStr;
+	m_szString = (char*) szStr;
 }
 
 unprecache_list_string::unprecache_list_string()
 {
-    m_szString = nullptr;
+	m_szString = nullptr;
 }
 
 
 
 /*unprecache_list_string::operator char *() const
 {
-    return m_szString;
+	return m_szString;
 }
 */
 
 bool unprecache_list_string::operator<(const unprecache_list_string szS2) const
 {
-    register char* szStr = m_szString;
-    register char* szStr2 = szS2.c_str();
+	register char* szStr = m_szString;
+	register char* szStr2 = szS2.c_str();
 
-    for(register int i = 0;;++i)
+	for(register int i = 0;;++i)
     {
-        if(szStr[i] < szStr2[i])
-        {
-            return true;
-        }
-        else if(szStr[i] > szStr2[i])
-        {
-            return false;
-        }
-        else if(szStr[i]=='\0' || szStr2[i]=='\0')
-        {
-            return false;
-        }
-    }
-    return false;
+		if(szStr[i] < szStr2[i])
+		{
+			return true;
+		}
+		else if(szStr[i] > szStr2[i])
+		{
+			return false;
+		}
+		else if(szStr[i]=='\0' || szStr2[i]=='\0')
+		{
+			return false;
+		}
+	}
+	return false;
 }
 
 char* unprecache_list_string::c_str() const
 {
-    return m_szString;
+	return m_szString;
 }
