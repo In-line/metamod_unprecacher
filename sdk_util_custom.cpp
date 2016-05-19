@@ -84,8 +84,8 @@ void UTIL_LogError(const char *fmt, ...)
 
     char*  szStr = UTIL_GetLog(g_szLogString);
     sprintf(g_szLogString, szStr);
+    SERVER_PRINT(szStr);
     UTIL_LogToFile("error", g_szLogString);
     ALERT( at_error, szStr );
     delete[] szStr;
-    SERVER_PRINT(g_szLogString);
 }
