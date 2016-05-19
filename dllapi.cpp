@@ -42,17 +42,17 @@
 
 void PM_PlaySoundBlock( int channel, const char *sample, float volume, float attenuation, int fFlags, int pitch )
 {
-    return;
+	return;
 }
 void pfnPM_Move ( struct playermove_s *ppmove, int server )
 {
-    if(!config_file::cfgBlockSound)
-    {
-        RETURN_META(MRES_IGNORED);
-    }
-    ppmove->PM_PlaySound = PM_PlaySoundBlock;
-    MDLL_PM_Move(ppmove, server);
-    RETURN_META(MRES_SUPERCEDE);
+	if(!config_file::cfgBlockSound)
+	{
+		RETURN_META(MRES_IGNORED);
+	}
+	ppmove->PM_PlaySound = PM_PlaySoundBlock;
+	MDLL_PM_Move(ppmove, server);
+	RETURN_META(MRES_SUPERCEDE);
 }
 static DLL_FUNCTIONS gFunctionTable = 
 {
@@ -99,8 +99,8 @@ static DLL_FUNCTIONS gFunctionTable =
 	
 	NULL,					// pfnSys_Error
 
-    pfnPM_Move,					// pfnPM_Move
-    NULL,					// pfnPM_Init
+	pfnPM_Move,				// pfnPM_Move
+	NULL,					// pfnPM_Init
 	NULL,					// pfnPM_FindTextureType
 	
 	NULL,					// pfnSetupVisibility
@@ -123,7 +123,7 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable,
 		int *interfaceVersion)
 {
 	if(!pFunctionTable) {
-        UTIL_LogError("[Error] GetEntityAPI2 called with null pFunctionTable");
+		UTIL_LogError("[Error] GetEntityAPI2 called with null pFunctionTable");
 		return(FALSE);
 	}
 	else if(*interfaceVersion != INTERFACE_VERSION) {
