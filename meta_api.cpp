@@ -64,13 +64,13 @@ static META_FUNCTIONS gMetaFunctionTable = {
 	NULL,			// pfnGetNewDLLFunctions		HL SDK2; called before game DLL
     NULL,			// pfnGetNewDLLFunctions_Post	META; called after game DLL
 	GetEngineFunctions,	// pfnGetEngineFunctions	META; called before HL engine
-    GetEngineFunctions_Post,			// pfnGetEngineFunctions_Post	META; called after HL engine
+    NULL,			// pfnGetEngineFunctions_Post	META; called after HL engine
 };
 
 // Description of plugin
 plugin_info_t Plugin_info = {
     META_INTERFACE_VERSION,
-    "Unprecacher",
+    "Ultimate Unprecacher",
     "0.1 Alpha",
     "2016/05/18",
     "Alik Aslanyan <cplusplus256@gmail.com>",

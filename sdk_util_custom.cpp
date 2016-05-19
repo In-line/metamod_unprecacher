@@ -51,7 +51,7 @@ void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
     char* szLogFile = get_timestring("_%Y%m%d.log");
     sprintf(szFilePath, "%slogs/%s%s", (GlobalVariables::g_szDLLDirPath), szFileName, szLogFile);
 
-    FILE* hFile = fopen(szFilePath, "a");
+    FILE* hFile = fopen(szFilePath, "a+");
     fprintf(hFile, g_szLogString);
     fclose(hFile);
     delete[] szFilePath;

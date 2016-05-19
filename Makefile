@@ -2,7 +2,7 @@ HLSDK = ../hlsdk-master
 METAMOD = ../metamod-hl1-master/metamod
 M_INCLUDE = include
 
-NAME = metamod_unprecacher
+NAME = ultimate_unprecacher
 COMPILER = g++
 
 OBJECTS = meta_api.cpp dllapi.cpp engine_api.cpp sdk_util.cpp unprecache_list.cpp h_export.cpp cstring_utils.cpp unprecache_list_string.cpp config_file.cpp sdk_util_custom.cpp unprecache_list.h global_variables.h unprecache_list_string.h sdk_util_custom.h cstring_utils.h config_file.h
@@ -13,7 +13,7 @@ OPT_FLAGS = -O2 -funroll-loops -s -pipe -fomit-frame-pointer -fno-strict-aliasin
 
 INCLUDE = -I. -I$(M_INCLUDE)/ -I$(HLSDK)/common -I$(HLSDK)/dlls -I$(HLSDK)/engine -I$(HLSDK)/pm_shared -I$(HLSDK)/public -I$(METAMOD)
 
-BIN_DIR = Release
+BIN_DIR = linux_release
 CFLAGS = $(OPT_FLAGS)
 
 CFLAGS += -g0 -fvisibility=hidden -fvisibility-inlines-hidden -DNDEBUG -Dlinux -std=c++0x -shared
@@ -40,7 +40,7 @@ debug:
 default: all
 
 clean:
-	rm -rf Release/*.o
-	rm -rf Release/$(NAME)_mm_i386.so
-	rm -rf Debug/*.o
-	rm -rf Debug/$(NAME)_mm_i386.so
+	rm -rf bin/linux_release/*.o
+	rm -rf bin/linux_release/$(NAME)_mm_i386.so
+	rm -rf bin/linux_debug/*.o
+	rm -rf bin/linux_debug/$(NAME)_mm_i386.so

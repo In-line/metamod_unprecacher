@@ -1,6 +1,6 @@
 /* Most of functions from stackoverflow */
 
-//#include "cstring_utils.h"
+#include "cstring_utils.h"
 #include <stdio.h>
 #include <cstring>
 #include <ctype.h>
@@ -42,7 +42,7 @@ void trim(char *str)
 }
 
 
-bool str_is_empty(char *szStr,bool isSpaceEmpty = true)
+bool str_is_empty(char *szStr,bool isSpaceEmpty)
 {
     for(register int i = 0;;i++)
     {
