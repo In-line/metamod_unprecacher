@@ -37,10 +37,9 @@
 class GlobalVariables
 {
 public:
-	static unprecache_list *g_ulUnprecacheList;
-	static unprecache_list *g_ulNotDeleteList;
+	static unprecache_list* g_ulUnprecacheList;
 	static char* g_szDLLDirPath;
+	static char* g_szIniPath;
+	static char* g_szConfigPath;
 };
-
-
 #endif // GLOBAL_VARIABLES_H

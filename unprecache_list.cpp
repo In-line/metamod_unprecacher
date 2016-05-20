@@ -35,13 +35,13 @@
 
 #include "sdk_util_custom.h"
 
-unprecache_list::unprecache_list(char* szListFile)
+unprecache_list::unprecache_list()
 {
 	m_Lists[0] = new std::set<unprecache_list_string>();
 	m_Lists[1] = new std::set<unprecache_list_string>();
 	m_Lists[2] = new std::set<unprecache_list_string>();
 	m_szLastModel = nullptr;
-	loadFromFile(szListFile);
+
 }
 
 unprecache_list::~unprecache_list()
@@ -66,20 +66,20 @@ bool unprecache_list::spriteExists(const char *szSprite)
 }
 
 
-bool inline unprecache_list::stringExists(const char *szString, short iIndex)
+inline bool unprecache_list::stringExists(const char *szString,const short iIndex)
 {
 	if(m_szLastModel!=nullptr && strcmp(m_szLastModel, szString) == 0)
 	{
 		return m_iLastResult;
 	}
-	m_iLastResult = m_Lists[iIndex]->find(szString)!=m_EndIterators[iIndex];
+	m_iLastResult = m_Lists[iIndex]->find(szString)!=m_aEndIterators[iIndex];
 	m_szLastModel = (char*) szString;
 	return m_iLastResult;
 }
 
 void unprecache_list::loadFromFile(char* szListFile)
 {
-	FILE* hFile = fopen(szListFile, "r");
+	FILE* hFile = fopen(szListFile, "a+");
 
 	if(hFile == NULL)
 	{
@@ -103,11 +103,11 @@ void unprecache_list::loadFromFile(char* szListFile)
 			if(str_nends_with(".mdl", szBuffer, iReadLen))
 			{
 				if(starts_with(szBuffer,"models/"))
-					{
-						str_remove_first_chars(szBuffer, 7);
-					}
+				{
+					str_remove_first_chars(szBuffer, 7);
+				}
 				iIndex = 0;
-            }
+			}
 			else if(str_nends_with(".wav", szBuffer, iReadLen))
 			{
 				if(starts_with(szBuffer,"sound/"))
@@ -136,9 +136,9 @@ void unprecache_list::loadFromFile(char* szListFile)
 	{
 		UTIL_LogError("[Error] Not loaded anything!");
 	}
-	m_EndIterators[0] = m_Lists[0]->end();
-	m_EndIterators[1] = m_Lists[1]->end();
-	m_EndIterators[2] = m_Lists[2]->end();
+	m_aEndIterators[0] = m_Lists[0]->end();
+	m_aEndIterators[1] = m_Lists[1]->end();
+	m_aEndIterators[2] = m_Lists[2]->end();
 }
 
 

@@ -106,3 +106,31 @@ void UTIL_LogError(const char *fmt, ...)
 	ALERT( at_error, szStr );
 	delete[] szStr;
 }
+
+#ifndef _WIN32
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#endif;
+bool CreateDirectoryIfNotExists(char *szPath)
+{
+#ifdef _WIN32
+	if (CreateDirectory(szPath, NULL))
+	{
+		return true;
+	}
+	return ERROR_ALREADY_EXISTS == GetLastError();
+#else
+	DIR* dCheckDir = opendir(szPath);
+	if (dCheckDir)
+	{
+		closedir(dCheckDir);
+		return true;
+	}
+	else if (ENOENT == errno)
+	{
+		return mkdir(szPath, 0700) == 0;
+	}
+	return false;
+#endif
+}

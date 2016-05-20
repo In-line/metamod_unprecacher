@@ -38,7 +38,7 @@ bool config_file::cfgBlockSound;
 void config_file::LoadCfg(char *szPathToCfg)
 {
 	ResetAllVars();
-	FILE* hFile = fopen(szPathToCfg,"r");
+	FILE* hFile = fopen(szPathToCfg,"a+");
 	if(hFile == NULL)
 	{
 		UTIL_LogError("[Error] Cannot open config file %s", szPathToCfg);
@@ -58,7 +58,7 @@ void config_file::LoadCfg(char *szPathToCfg)
 			{
 				trim(szValue);
 				if(strstr(szValue,"true"))
-				config_file::cfgBlockSound = true;
+					config_file::cfgBlockSound = true;
 			}
 		}
 	}

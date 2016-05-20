@@ -3,6 +3,7 @@
 #include <extdll.h>
 #include <meta_api.h>
 void UTIL_LogError(const char *fmt, ...);
+bool CreateDirectoryIfNotExists(char *szPath);
 #include <sdk_util.h>
 
 

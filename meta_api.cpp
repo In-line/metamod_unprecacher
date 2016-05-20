@@ -53,8 +53,12 @@ extern "C" void GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine,globalvars_t 
 #endif
 
 #include "global_variables.h"
-unprecache_list* GlobalVariables::g_ulUnprecacheList;
+
 char* GlobalVariables::g_szDLLDirPath;
+char* GlobalVariables::g_szConfigPath;
+char* GlobalVariables::g_szIniPath;
+unprecache_list* GlobalVariables::g_ulUnprecacheList;
+
 // Must provide at least one of these..
 static META_FUNCTIONS gMetaFunctionTable = {
 	NULL,			// pfnGetEntityAPI				HL SDK; called before game DLL
@@ -71,7 +75,7 @@ static META_FUNCTIONS gMetaFunctionTable = {
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,
 	"Ultimate Unprecacher",
-	"0.2 Alpha",
+	"0.3 Alpha",
 	"2016/05/18",
 	"Alik Aslanyan <cplusplus256@gmail.com>",
 	"http://www.metamod.org/",
@@ -85,7 +89,7 @@ gamedll_funcs_t *gpGamedllFuncs;
 mutil_funcs_t *gpMetaUtilFuncs;
 
 C_DLLEXPORT int Meta_Query(const char * /*ifvers */, 
-		plugin_info_t **pPlugInfo, mutil_funcs_t *pMetaUtilFuncs) 
+						   plugin_info_t **pPlugInfo, mutil_funcs_t *pMetaUtilFuncs)
 {
 	// Give metamod our plugin_info struct
 	*pPlugInfo=&Plugin_info;
@@ -95,8 +99,8 @@ C_DLLEXPORT int Meta_Query(const char * /*ifvers */,
 }
 
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */, 
-		META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals, 
-		gamedll_funcs_t *pGamedllFuncs) 
+							META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals,
+							gamedll_funcs_t *pGamedllFuncs)
 {
 	if(!pMGlobals) {
 		UTIL_LogError("[Error] Meta_Attach called with null pMGlobals");
@@ -112,26 +116,41 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	const char* szDLLPath = GET_PLUGIN_PATH(PLID);
 	GlobalVariables::g_szDLLDirPath = get_path((char*)szDLLPath);
 	unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
-	char* szPathToIni = new char[iDllDirPathLen + 29 + 1];
-	sprintf(szPathToIni,"%sconfig/unprecache_list.ini", GlobalVariables::g_szDLLDirPath);
-	GlobalVariables::g_ulUnprecacheList = new unprecache_list(szPathToIni);
 
-	delete[] szPathToIni;
+	char* szPathToCfgFolder = new char[iDllDirPathLen + 10 + 1];
+	sprintf(szPathToCfgFolder,"%sconfig/", GlobalVariables::g_szDLLDirPath);
 
-	char* szPathToCfg = new char[iDllDirPathLen + 35 + 1];
-	sprintf(szPathToCfg,"%sconfig/unprecacher.cfg", GlobalVariables::g_szDLLDirPath);
+	CreateDirectoryIfNotExists(szPathToCfgFolder);
+	char *szPathToLogFolder = new char[iDllDirPathLen + 7 + 1];
+	sprintf(szPathToLogFolder, "%slogs/", GlobalVariables::g_szDLLDirPath);
+	CreateDirectoryIfNotExists(szPathToLogFolder);
+	delete[] szPathToLogFolder;
+
+	char *szPathToCfg = new char[iDllDirPathLen + 17 + 1];
+	sprintf(szPathToCfg,"%sunprecacher.cfg", szPathToCfgFolder);
 	config_file::LoadCfg(szPathToCfg);
-	delete[] szPathToCfg;
+	GlobalVariables::g_szConfigPath = szPathToCfg;
+
+	char* szPathToIni = new char[iDllDirPathLen + 30 + 1];
+	sprintf(szPathToIni,"%sunprecache_list.ini", szPathToCfgFolder);
+	GlobalVariables::g_ulUnprecacheList = new unprecache_list();
+	GlobalVariables::g_ulUnprecacheList->loadFromFile(szPathToIni);
+	GlobalVariables::g_szIniPath = szPathToIni;
+
+	delete[] szPathToCfgFolder;
+	return(TRUE);
 
 
 	return(TRUE);
 }
 
 C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME,
-		PL_UNLOAD_REASON)
+							PL_UNLOAD_REASON)
 {
 	delete GlobalVariables::g_ulUnprecacheList;
 	delete[] GlobalVariables::g_szDLLDirPath;
+	delete[] GlobalVariables::g_szIniPath;
+	delete[] GlobalVariables::g_szConfigPath;
 	//delete g_ulNotDeleteList;
 	return(TRUE);
 }

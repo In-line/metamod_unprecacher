@@ -37,8 +37,8 @@
 class unprecache_list_string
 {
 private:
-char* m_szString;
-static bool compare(char *szStr);
+	char* m_szString;
+	static bool compare(char *szStr);
 public:
 	unprecache_list_string(char *szStr);
 	unprecache_list_string(const char *szStr);

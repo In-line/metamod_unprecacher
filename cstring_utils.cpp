@@ -32,7 +32,7 @@ void trim(char *str)
 	{
 		if (!isspace((unsigned char)end[-1]))
 			break;
-    }
+	}
 
 	*end = 0;
 
@@ -89,11 +89,11 @@ struct MatchPathSeparator
 {
 	inline bool operator()( char ch ) const
 	{
-		#ifdef _WIN32
+#ifdef _WIN32
 		return ch == '/';
-		#else
+#else
 		return ch == '\\' || ch == '/';
-		#endif
+#endif
 	}
 };
 
@@ -193,7 +193,7 @@ bool str_nends_with(char *postfix, char *string, int iLen)
 	while(*postfix)
 	{
 		if(*postfix++ != *string++)
-		return false;
+			return false;
 	}
 	return true;
 }

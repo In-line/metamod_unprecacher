@@ -61,7 +61,7 @@ bool unprecache_list_string::operator<(const unprecache_list_string szS2) const
 	register char* szStr2 = szS2.c_str();
 
 	for(register int i = 0;;++i)
-    {
+	{
 		if(szStr[i] < szStr2[i])
 		{
 			return true;
