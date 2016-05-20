@@ -39,13 +39,9 @@
 #include <iomanip>
 
 #include "sdk_util_custom.h"
-char g_szLogString[1024];
 void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
 {
-	va_list		argptr;
-	va_start ( argptr, fmt );
-	vsnprintf ( g_szLogString, sizeof(g_szLogString), fmt, argptr );
-	va_end   ( argptr );
+
 
 	char* szFilePath = new char[strlen(GlobalVariables::g_szDLLDirPath) + 12 + 30 + 1];
 	char* szLogFile = get_timestring("_%Y%m%d.log");
@@ -62,7 +58,10 @@ void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
 		return;
 	}
 
-	fprintf(hFile, g_szLogString);
+	va_list		argptr;
+	va_start ( argptr, fmt );
+	vfprintf(hFile, fmt, argptr);
+	va_end   ( argptr );
 	if(ferror(hFile))
 	{
 		char szError[256];
@@ -78,31 +77,31 @@ void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
 char* UTIL_GetLog(const char *fmt, ...)
 {
 	va_list			argptr;
-	static char		temp[1024];
-	
+	static char		szTemp[1024];
+	static char		szReturn[1024];
 	va_start ( argptr, fmt );
-	vsnprintf ( temp, sizeof(temp), fmt, argptr );
+	vsnprintf ( szTemp, sizeof(szTemp), fmt, argptr );
 	va_end	( argptr );
 	
 	char* szDateTime = get_timestring("%d\\%m\\%Y %X");
-	sprintf(g_szLogString,"[Metamod Ultimate Unprecacher] [%s] : %s\n",szDateTime,temp);
+	sprintf(szReturn,"[Metamod Ultimate Unprecacher] [%s] : %s\n",szDateTime,szTemp);
 	delete[] szDateTime;
 	
-	return str_copy(g_szLogString);
+	return str_copy(szReturn);
 }
 
 void UTIL_LogError(const char *fmt, ...)
 {
 	va_list			argptr;
-	
+	static char		szTemp[1024];
 	va_start ( argptr, fmt );
-	vsnprintf ( g_szLogString, sizeof(g_szLogString), fmt, argptr );
+	vsnprintf ( szTemp, sizeof(szTemp), fmt, argptr );
 	va_end   ( argptr );
 	
-	char*  szStr = UTIL_GetLog(g_szLogString);
-	strcpy(g_szLogString, szStr);
+	char*  szStr = UTIL_GetLog(szTemp);
+	strcpy(szTemp, szStr);
 	SERVER_PRINT(szStr);
-	UTIL_LogToFile("error", g_szLogString);
+	UTIL_LogToFile("error", szStr);
 	ALERT( at_error, szStr );
 	delete[] szStr;
 }
