@@ -128,6 +128,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 
 	char *szPathToCfg = new char[iDllDirPathLen + 25 + 1];
 	sprintf(szPathToCfg,"%sunprecacher.cfg", szPathToCfgFolder);
+
 	config_file::LoadCfg(szPathToCfg);
 	GlobalVariables::g_szConfigPath = szPathToCfg;
 

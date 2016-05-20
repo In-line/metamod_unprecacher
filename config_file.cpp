@@ -49,6 +49,14 @@ void config_file::LoadCfg(char *szPathToCfg)
 	while(!feof(hFile))
 	{
 		fgets(szBuffer,sizeof(szBuffer),hFile);
+		if(ferror(hFile))
+		{
+			char szError[256];
+			sprintf(szError, "File error: %s\n", strerror(errno));
+			SERVER_PRINT(szError);
+			clearerr(hFile);
+			return;
+		}
 		UTIL_RemoveComments(szBuffer);
 		trim(szBuffer);
 
