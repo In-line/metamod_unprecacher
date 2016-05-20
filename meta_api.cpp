@@ -102,6 +102,10 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 							META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals,
 							gamedll_funcs_t *pGamedllFuncs)
 {
+	GlobalVariables::g_szDLLDirPath = str_copy(GET_PLUGIN_PATH(PLID));
+	char* cLastSlash = strrchr(GlobalVariables::g_szDLLDirPath, '/');
+	*(cLastSlash  + 1) = '\0';
+
 	if(!pMGlobals) {
 		UTIL_LogError("[Error] Meta_Attach called with null pMGlobals");
 		return(FALSE);
@@ -113,9 +117,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	}
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 	gpGamedllFuncs=pGamedllFuncs;
-	GlobalVariables::g_szDLLDirPath = str_copy(GET_PLUGIN_PATH(PLID));
-	char* cLastSlash = strrchr(GlobalVariables::g_szDLLDirPath, '/');
-	*(cLastSlash  + 1) = '\0';
 
 	unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
 
@@ -131,7 +132,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 
 	char *szPathToCfg = new char[iCfgFolderLen + 25 + 1];
 	sprintf(szPathToCfg,"%sunprecacher.cfg", szPathToCfgFolder);
-
 	config_file::LoadCfg(szPathToCfg);
 	GlobalVariables::g_szConfigPath = szPathToCfg;
 
@@ -142,9 +142,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	GlobalVariables::g_szIniPath = szPathToIni;
 
 	delete[] szPathToCfgFolder;
-	return(TRUE);
-
-
 	return(TRUE);
 }
 
