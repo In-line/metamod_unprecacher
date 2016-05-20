@@ -93,10 +93,13 @@ void unprecache_list::loadFromFile(char* szListFile)
 
 	while(!feof(hFile))
 	{
-		fgets(szBuffer,sizeof(szBuffer),hFile);
+		if(fgets(szBuffer,sizeof(szBuffer),hFile) == NULL)
+		{
+			continue;
+		}
 		UTIL_RemoveComments(szBuffer);
 		trim(szBuffer);
-		if(szBuffer[0]!=0)
+		if(!str_is_empty(szBuffer))
 		{
 			short iIndex = 0;
 			int iReadLen = strlen(szBuffer);

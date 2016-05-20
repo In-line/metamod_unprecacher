@@ -55,13 +55,6 @@ bool str_is_empty(char *szStr,bool isSpaceEmpty)
 	return true;
 }
 
-char* stradd(const char* a, const char* b)
-{
-	size_t len = strlen(a) + strlen(b);
-	char *ret = (char*)malloc(len * sizeof(char) + 1);
-	*ret = '\0';
-	return strcat(strcat(ret, a) ,b);
-}
 
 char* str_copy(const char* s)
 {

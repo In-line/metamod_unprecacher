@@ -39,16 +39,22 @@ void config_file::LoadCfg(char *szPathToCfg)
 {
 	ResetAllVars();
 	FILE* hFile = fopen(szPathToCfg,"a+");
+	SERVER_PRINT(szPathToCfg);
 	if(hFile == NULL)
 	{
 		UTIL_LogError("[Error] Cannot open config file %s", szPathToCfg);
 		return;
 	}
-	char szBuffer[256];
+
 	char *szValue = NULL;
+	char szBuffer[256];
 	while(!feof(hFile))
 	{
-		fgets(szBuffer,sizeof(szBuffer),hFile);
+
+		if(fgets(szBuffer,sizeof(szBuffer),hFile) == NULL)
+		{
+			continue;
+		}
 		if(ferror(hFile))
 		{
 			char szError[256];

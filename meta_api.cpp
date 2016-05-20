@@ -113,9 +113,10 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	}
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 	gpGamedllFuncs=pGamedllFuncs;
-	const char* szDLLPath = GET_PLUGIN_PATH(PLID);
-	GlobalVariables::g_szDLLDirPath = strrchr((char*)szDLLPath,'/');
-	*(GlobalVariables::g_szDLLDirPath  + 1) = '\0';
+	GlobalVariables::g_szDLLDirPath = str_copy(GET_PLUGIN_PATH(PLID));
+	char* cLastSlash = strrchr(GlobalVariables::g_szDLLDirPath, '/');
+	*(cLastSlash  + 1) = '\0';
+
 	unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
 
 	char* szPathToCfgFolder = new char[iDllDirPathLen + 15 + 1];
