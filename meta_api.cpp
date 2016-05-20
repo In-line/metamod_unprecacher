@@ -117,16 +117,16 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	GlobalVariables::g_szDLLDirPath = get_path((char*)szDLLPath);
 	unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
 
-	char* szPathToCfgFolder = new char[iDllDirPathLen + 10 + 1];
+	char* szPathToCfgFolder = new char[iDllDirPathLen + 15 + 1];
 	sprintf(szPathToCfgFolder,"%sconfig/", GlobalVariables::g_szDLLDirPath);
 
 	CreateDirectoryIfNotExists(szPathToCfgFolder);
-	char *szPathToLogFolder = new char[iDllDirPathLen + 7 + 1];
+	char *szPathToLogFolder = new char[iDllDirPathLen + 15 + 1];
 	sprintf(szPathToLogFolder, "%slogs/", GlobalVariables::g_szDLLDirPath);
 	CreateDirectoryIfNotExists(szPathToLogFolder);
 	delete[] szPathToLogFolder;
 
-	char *szPathToCfg = new char[iDllDirPathLen + 17 + 1];
+	char *szPathToCfg = new char[iDllDirPathLen + 25 + 1];
 	sprintf(szPathToCfg,"%sunprecacher.cfg", szPathToCfgFolder);
 	config_file::LoadCfg(szPathToCfg);
 	GlobalVariables::g_szConfigPath = szPathToCfg;
