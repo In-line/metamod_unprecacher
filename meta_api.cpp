@@ -78,7 +78,7 @@ plugin_info_t Plugin_info = {
 	"0.3 Alpha",
 	"2016/05/18",
 	"Alik Aslanyan <cplusplus256@gmail.com>",
-	"http://www.metamod.org/",
+	"https://github.com/in-line/metamod_unprecacher",
 	"",
 	PT_ANYTIME,
 	PT_ANYTIME,
