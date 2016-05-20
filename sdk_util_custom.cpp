@@ -41,8 +41,6 @@
 #include "sdk_util_custom.h"
 void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
 {
-
-
 	char* szFilePath = new char[strlen(GlobalVariables::g_szDLLDirPath) + 12 + 30 + 1];
 	char* szLogFile = get_timestring("_%Y%m%d.log");
 	sprintf(szFilePath, "%slogs/%s%s", (GlobalVariables::g_szDLLDirPath), szFileName, szLogFile);
@@ -51,25 +49,12 @@ void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
 	delete[] szLogFile;
 	if(hFile == NULL)
 	{
-		char szError[256];
-		sprintf(szError, "Error fopen: %s\n", strerror(errno));
-		SERVER_PRINT(szError);
-		clearerr(hFile);
 		return;
 	}
-
 	va_list		argptr;
 	va_start ( argptr, fmt );
 	vfprintf(hFile, fmt, argptr);
 	va_end   ( argptr );
-	if(ferror(hFile))
-	{
-		char szError[256];
-		sprintf(szError, "Error fprintf: %s\n", strerror(errno));
-		SERVER_PRINT(szError);
-		clearerr(hFile);
-		return;
-	}
 	fclose(hFile);
 
 }

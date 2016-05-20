@@ -50,18 +50,9 @@ void config_file::LoadCfg(char *szPathToCfg)
 	char szBuffer[256];
 	while(!feof(hFile))
 	{
-
 		if(fgets(szBuffer,sizeof(szBuffer),hFile) == NULL)
 		{
 			continue;
-		}
-		if(ferror(hFile))
-		{
-			char szError[256];
-			sprintf(szError, "File error: %s\n", strerror(errno));
-			SERVER_PRINT(szError);
-			clearerr(hFile);
-			return;
 		}
 		UTIL_RemoveComments(szBuffer);
 		trim(szBuffer);
@@ -73,6 +64,10 @@ void config_file::LoadCfg(char *szPathToCfg)
 				trim(szValue);
 				if(strstr(szValue,"true"))
 					config_file::cfgBlockSound = true;
+			}
+			else
+			{
+				UTIL_LogError("[Error] unprecacher.cfg contents garbage data");
 			}
 		}
 	}
@@ -87,7 +82,7 @@ void config_file::ResetAllVars()
 inline char* config_file::ParseCvar(char *szBuffer, char *szVarName)
 {
 	char* szStr = NULL;
-	UTIL_LogError(szBuffer);
+
 	szStr = strtok(szBuffer,"=");
 	if(szStr == NULL || str_is_empty(szStr)) return false;
 
