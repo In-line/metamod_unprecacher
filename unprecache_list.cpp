@@ -37,109 +37,108 @@
 
 unprecache_list::unprecache_list(char* szListFile)
 {
-    m_Lists[0] = new std::set<unprecache_list_string>();
-    m_Lists[1] = new std::set<unprecache_list_string>();
-    m_Lists[2] = new std::set<unprecache_list_string>();
-    m_szLastModel = nullptr;
-    loadFromFile(szListFile);
-
+	m_Lists[0] = new std::set<unprecache_list_string>();
+	m_Lists[1] = new std::set<unprecache_list_string>();
+	m_Lists[2] = new std::set<unprecache_list_string>();
+	m_szLastModel = nullptr;
+	loadFromFile(szListFile);
 }
 
 unprecache_list::~unprecache_list()
 {
-    delete m_Lists[0];
-    delete m_Lists[1];
-    delete m_Lists[2];
+	delete m_Lists[0];
+	delete m_Lists[1];
+	delete m_Lists[2];
 }
 bool unprecache_list::soundExists(const char *szSound)
 {
-    return stringExists(szSound, 1);
+	return stringExists(szSound, 1);
 }
 
 bool unprecache_list::modelExists(const char *szModel)
 {
-    return stringExists(szModel, 0);
+	return stringExists(szModel, 0);
 }
 
 bool unprecache_list::spriteExists(const char *szSprite)
 {
-    return stringExists(szSprite, 2);
+	return stringExists(szSprite, 2);
 }
 
 
 bool inline unprecache_list::stringExists(const char *szString, short iIndex)
 {
-    if(m_szLastModel!=nullptr && strcmp(m_szLastModel, szString) == 0)
-    {
-        return m_iLastResult;
-    }
-    m_iLastResult = m_Lists[iIndex]->find(szString)!=m_EndIterators[iIndex];
-    m_szLastModel = (char*) szString;
-    return m_iLastResult;
+	if(m_szLastModel!=nullptr && strcmp(m_szLastModel, szString) == 0)
+	{
+		return m_iLastResult;
+	}
+	m_iLastResult = m_Lists[iIndex]->find(szString)!=m_EndIterators[iIndex];
+	m_szLastModel = (char*) szString;
+	return m_iLastResult;
 }
 
 void unprecache_list::loadFromFile(char* szListFile)
 {
-    FILE* hFile = fopen(szListFile, "r");
+	FILE* hFile = fopen(szListFile, "r");
 
-    if(hFile == NULL)
-    {
-        UTIL_LogError("[Error] Cannot open file %s", szListFile);
-        return;
-    }
-    m_Lists[0]->clear();
-    m_Lists[1]->clear();
-    m_Lists[2]->clear();
-    char szBuffer[256];
+	if(hFile == NULL)
+	{
+		UTIL_LogError("[Error] Cannot open file %s", szListFile);
+		return;
+	}
+	m_Lists[0]->clear();
+	m_Lists[1]->clear();
+	m_Lists[2]->clear();
+	char szBuffer[256];
 
-    while(!feof(hFile))
-    {
-        fgets(szBuffer,sizeof(szBuffer),hFile);
-        UTIL_RemoveComments(szBuffer);
-        trim(szBuffer);
-        if(szBuffer[0]!=0)
-        {
-            short iIndex = 0;
-            int iReadLen = strlen(szBuffer);
-            if(str_nends_with(".mdl", szBuffer, iReadLen))
-            {
-                    if(starts_with(szBuffer,"models/"))
-                    {
-                        str_remove_first_chars(szBuffer, 7);
-                    }
-                    iIndex = 0;
+	while(!feof(hFile))
+	{
+		fgets(szBuffer,sizeof(szBuffer),hFile);
+		UTIL_RemoveComments(szBuffer);
+		trim(szBuffer);
+		if(szBuffer[0]!=0)
+		{
+			short iIndex = 0;
+			int iReadLen = strlen(szBuffer);
+			if(str_nends_with(".mdl", szBuffer, iReadLen))
+			{
+				if(starts_with(szBuffer,"models/"))
+					{
+						str_remove_first_chars(szBuffer, 7);
+					}
+				iIndex = 0;
             }
-            else if(str_nends_with(".wav", szBuffer, iReadLen))
-            {
-                if(starts_with(szBuffer,"sound/"))
-                {
-                    str_remove_first_chars(szBuffer, 6);
-                }
-                iIndex = 1;
-            }
-            else if(str_nends_with(".spr", szBuffer, iReadLen))
-            {
-                if(starts_with(szBuffer,"sprites/"))
-                {
-                    str_remove_first_chars(szBuffer, 8);
-                }
-                iIndex = 2;
-            }
-            else
-            {
-                UTIL_LogError("[Error] Unrecognized line postfix");
-            }
-            m_Lists[iIndex]->insert(str_copy(szBuffer));
-        }
-    }
-    fclose(hFile);
-    if(m_Lists[0]->empty() && m_Lists[1]->empty() && m_Lists[2]->empty())
-    {
-        UTIL_LogError("[Error] Not loaded anything!");
-    }
-    m_EndIterators[0] = m_Lists[0]->end();
-    m_EndIterators[1] = m_Lists[1]->end();
-    m_EndIterators[2] = m_Lists[2]->end();
+			else if(str_nends_with(".wav", szBuffer, iReadLen))
+			{
+				if(starts_with(szBuffer,"sound/"))
+				{
+					str_remove_first_chars(szBuffer, 6);
+				}
+				iIndex = 1;
+			}
+			else if(str_nends_with(".spr", szBuffer, iReadLen))
+			{
+				if(starts_with(szBuffer,"sprites/"))
+				{
+					str_remove_first_chars(szBuffer, 8);
+				}
+				iIndex = 2;
+			}
+			else
+			{
+				UTIL_LogError("[Error] Unrecognized line postfix");
+			}
+			m_Lists[iIndex]->insert(str_copy(szBuffer));
+		}
+	}
+	fclose(hFile);
+	if(m_Lists[0]->empty() && m_Lists[1]->empty() && m_Lists[2]->empty())
+	{
+		UTIL_LogError("[Error] Not loaded anything!");
+	}
+	m_EndIterators[0] = m_Lists[0]->end();
+	m_EndIterators[1] = m_Lists[1]->end();
+	m_EndIterators[2] = m_Lists[2]->end();
 }
 
 
