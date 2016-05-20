@@ -114,25 +114,27 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 	gpGamedllFuncs=pGamedllFuncs;
 	const char* szDLLPath = GET_PLUGIN_PATH(PLID);
-	GlobalVariables::g_szDLLDirPath = get_path((char*)szDLLPath);
+	GlobalVariables::g_szDLLDirPath = strrchr((char*)szDLLPath,'/');
+	*(GlobalVariables::g_szDLLDirPath  + 1) = '\0';
 	unsigned int iDllDirPathLen = strlen(GlobalVariables::g_szDLLDirPath);
 
 	char* szPathToCfgFolder = new char[iDllDirPathLen + 15 + 1];
 	sprintf(szPathToCfgFolder,"%sconfig/", GlobalVariables::g_szDLLDirPath);
-
+	int iCfgFolderLen = strlen(szPathToCfgFolder);
 	CreateDirectoryIfNotExists(szPathToCfgFolder);
+
 	char *szPathToLogFolder = new char[iDllDirPathLen + 15 + 1];
 	sprintf(szPathToLogFolder, "%slogs/", GlobalVariables::g_szDLLDirPath);
 	CreateDirectoryIfNotExists(szPathToLogFolder);
 	delete[] szPathToLogFolder;
 
-	char *szPathToCfg = new char[iDllDirPathLen + 25 + 1];
+	char *szPathToCfg = new char[iCfgFolderLen + 25 + 1];
 	sprintf(szPathToCfg,"%sunprecacher.cfg", szPathToCfgFolder);
 
 	config_file::LoadCfg(szPathToCfg);
 	GlobalVariables::g_szConfigPath = szPathToCfg;
 
-	char* szPathToIni = new char[iDllDirPathLen + 30 + 1];
+	char* szPathToIni = new char[iCfgFolderLen + 30 + 1];
 	sprintf(szPathToIni,"%sunprecache_list.ini", szPathToCfgFolder);
 	GlobalVariables::g_ulUnprecacheList = new unprecache_list();
 	GlobalVariables::g_ulUnprecacheList->loadFromFile(szPathToIni);

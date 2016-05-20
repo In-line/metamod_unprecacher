@@ -7,7 +7,6 @@ bool str_is_empty(char *szStr,bool isSpaceEmpty = true);
 char* stradd(const char* a, const char* b);
 char* str_copy(const char* s);
 void str_substr2(char sub[], char s[], int p, int l);
-char* get_path(char *szPathToFile);
 void replace_one_char(char *szStr, char what, char with);
 char* get_timestring(char* sptemp);
 #ifdef _WIN32

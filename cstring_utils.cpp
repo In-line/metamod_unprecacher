@@ -85,34 +85,6 @@ void str_substr2(char sub[], char s[], int p, int l)
 }
 
 
-struct MatchPathSeparator
-{
-	inline bool operator()( char ch ) const
-	{
-#ifdef _WIN32
-		return ch == '/';
-#else
-		return ch == '\\' || ch == '/';
-#endif
-	}
-};
-
-char* get_path(char *szPathToFile)
-{
-	int iLen = strlen(szPathToFile);
-	char* szReturn = new char[iLen+1];
-	strcpy(szReturn, szPathToFile);
-	for(unsigned int i = iLen;i;--i)
-	{
-		if(MatchPathSeparator()(szReturn[i]))
-		{
-			szReturn[i+1] = '\0';
-			break;
-		}
-	}
-	return szReturn;
-}
-
 void replace_one_char(char *szStr, char what, char with)
 {
 	for(register unsigned int i = 0;szStr[i]!=0;++i)

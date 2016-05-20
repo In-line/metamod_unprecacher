@@ -61,7 +61,7 @@ void UTIL_LogToFile(char* szFileName, const char *fmt, ...)
 		clearerr(hFile);
 		return;
 	}
-    
+
 	fprintf(hFile, g_szLogString);
 	if(ferror(hFile))
 	{
@@ -89,7 +89,7 @@ char* UTIL_GetLog(const char *fmt, ...)
 	delete[] szDateTime;
 	
 	return str_copy(g_szLogString);
-	}
+}
 
 void UTIL_LogError(const char *fmt, ...)
 {
