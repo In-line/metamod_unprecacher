@@ -38,7 +38,7 @@
 #include "config_file.h"
 
 #if defined _MSC_VER
-#pragma comment(linker, "/EXPORT:GiveFnptrsToDll = _GiveFnptrsToDll@8, @1")
+#pragma comment(linker, "/EXPORT:GiveFnptrsToDll=_GiveFnptrsToDll@8,@1")
 #endif // _WIN32
 
 #ifdef _WIN32
