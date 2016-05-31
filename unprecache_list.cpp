@@ -72,8 +72,6 @@ using namespace std::chrono;
 using namespace std;
 inline bool unprecache_list::stringExists(const char *szString,const short iIndex)
 {
-	high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
 	if(m_szLastModel!=nullptr && strcmp(m_szLastModel, szString) == 0)
 	{
 
@@ -82,14 +80,6 @@ inline bool unprecache_list::stringExists(const char *szString,const short iInde
 
 	m_iLastResult = m_Lists[iIndex]->find(szString)!=m_aEndIterators[iIndex];
 	m_szLastModel = (char*) szString;
-
-	high_resolution_clock::time_point t2 = high_resolution_clock::now();
-	auto time_span = duration_cast<duration<double>>( t2 - t1 );
-	double fDuration = time_span.count();
-	if(fDuration>=0.0)
-	{
-		UTIL_LogToFile("execution_time", "Time find, ex. time %s\n",to_string(fDuration).c_str());
-	}
 	return m_iLastResult;
 }
 
