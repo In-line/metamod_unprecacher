@@ -1,0 +1,6 @@
+[submodule "third_party/metamod-hl1"]
+	path = third_party/metamod-hl1
+	url = https://github.com/alliedmodders/metamod-hl1.git
+[submodule "third_party/hlsdk"]
+	path = third_party/hlsdk
+	url = https://github.com/alliedmodders/hlsdk.git

@@ -30,18 +30,38 @@
  *
  */
 
-#ifndef CONFIG_FILE_H
-#define CONFIG_FILE_H
+#ifndef UNPRECACHEOPTIONS_H
+#define UNPRECACHEOPTIONS_H
 
+#include <string>
 
-class config_file
+class UnprecacheOptions
 {
+bool deleteEntity_;
+bool notDeleteHuman_;
+bool replace_;
+std::string replacedPath_;
 public:
-	bool static cfgBlockSound;
-	void static LoadCfg(char *szPathToCfg);
-private:
-	void static ResetAllVars();
-	static char* ParseCvar(char *szBuffer, char *szVarName);
+	UnprecacheOptions();
+	bool operator ==(const UnprecacheOptions &obj) const;
+	bool operator !=(const UnprecacheOptions &obj) const;
+
+	bool deleteEntity() const;
+	void setDeleteEntity(bool deleteEntity);
+
+	bool notDeleteHuman() const;
+	void setNotDeleteHuman(bool notDeleteHuman);
+
+	bool replace() const;
+	void setReplace(bool replace);
+
+	const std::string& replacedPath() const;
+	void setReplacedPath(const std::string &replacedPath);
+
+	static UnprecacheOptions analyzeBitSetAlphabitePattern(std::string pattern);
+
+	bool isNotDefault() const;
+
 };
 
-#endif // CONFIG_FILE_H
+#endif // UNPRECACHEOPTIONS_H

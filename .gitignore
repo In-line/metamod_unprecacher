@@ -1,4 +1,3 @@
-*.pro
-*.pro.user
-*.pro.user.*
-*~
+CMakeLists.txt.user
+.*
+~*
