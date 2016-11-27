@@ -90,7 +90,7 @@ enum class ModuleFunctions
 	LastElement = MODEL_INDEXF
 };
 #define MODULE_CHECKS "module_checks"
-bool moduleFunctions[(std::size_t)ModuleFunctions::LastElement];
+bool moduleFunctions[(std::size_t)ModuleFunctions::LastElement + 1];
 void loadConfiguration();
 
 C_DLLEXPORT int Meta_Query(const char * /*ifvers */, plugin_info_t **pPlugInfo, mutil_funcs_t *pMetaUtilFuncs)
@@ -192,7 +192,7 @@ void loadConfiguration()
 		const std::string logPrefix = "[Ultimate Unprecacher] ";
 		std::time_t curTime = std::time(nullptr);
 		auto localTime = std::localtime(&curTime);
-		SERVER_PRINT((*mapName + str_put_time(localTime, " %H:%M:%S - ") + str + "\n" ).c_str());
+		SERVER_PRINT((logPrefix + *mapName + str_put_time(localTime, " %H:%M:%S - ") + str + "\n" ).c_str());
 	});
 
 	module->getLoggerRef()->setFileFunction([&](const std::string &str)
