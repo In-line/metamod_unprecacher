@@ -3,7 +3,7 @@ project(tester)
 set(CMAKE_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(CxxTest REQUIRED)
-cmake_policy(SET CMP0040 NEW)
+#cmake_policy(SET CMP0040 NEW)
 
 if(CXXTEST_FOUND)
 enable_testing()
