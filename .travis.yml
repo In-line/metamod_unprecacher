@@ -4,10 +4,9 @@ compiler:
   - gcc
 
 before_script:
+  - sudo add-apt-repository -y ppa:opencog-dev/ppa
   - sudo apt-get -qq update
-  - wget --timestamping https://github.com/CxxTest/cxxtest/releases/download/4.4/cxxtest-4.4.tar.gz
-  - tar xzf cxxtest-4.4.tar.gz
-  - export "CXXTEST=${PWD}/cxxtest-4.4"
+  - sudo apt-get install -y cxxtest
   - mkdir build
   - cd build
   - cmake ../
