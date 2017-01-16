@@ -4,6 +4,8 @@ compiler:
   - gcc
 
 before_script:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y cxxtest
   - mkdir build
   - cd build
   - cmake ../
