@@ -17,6 +17,7 @@ addons:
     - libc6-dev-i386
     - libc6-i386
     - build-essential
+    - checkinstall
 
 before_install:
   - lsb_release -c
@@ -39,7 +40,6 @@ install:
   - cd cmake-3.5.0
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
-  - sudo apt-get install -y checkinstall
   - sudo checkinstall -y
   - cmake --version
   
