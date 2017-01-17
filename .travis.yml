@@ -50,4 +50,5 @@ install:
 #  - echo $PATH
 before_script:
   - cmake .
-script: make
+script: 
+  - make -j`getconf _NPROCESSORS_ONLN`
