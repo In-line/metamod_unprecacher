@@ -2,16 +2,15 @@ language: cpp
 
 compiler:
   - gcc
-
-before_script:
+before_install:
   - lsb_release -c
   - lsb_release -r
-  - sudo rm /etc/dpkg/dpkg.cfg.d/multiarch
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu utopic main universe multiverse restricted'
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
   - sudo apt-key update
   - sudo apt-get -y update
-  - sudo apt-get -y install cxxtest
+install:
+  - sudo apt-get --no-install-recommends -y install cxxtest;
+before_script:
   - cmake .
-
 script: make
