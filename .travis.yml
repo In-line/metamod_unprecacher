@@ -9,8 +9,6 @@ cache:
 addons:
   apt:
     packages:
-    - gcc-4.9
-    - g++-4.9
     - libboost1.55-all-dev
     - gcc-multilib
     - g++-multilib
