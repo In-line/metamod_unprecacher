@@ -9,10 +9,10 @@ before_install:
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
   - sudo apt-key update
-  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
+#  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
   - sudo apt-get -y update
 install:
-  - sudo apt-get install -y ia32-libs
+#  - sudo apt-get install -y ia32-libs
   - sudo apt-get install -y libc6-dev-i386 libc6-i386
   - sudo apt-get install -y gcc-multilib g++-multilib
   - sudo apt-get --no-install-recommends -y install cxxtest;
