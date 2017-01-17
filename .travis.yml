@@ -65,7 +65,7 @@ install:
 before_script:
   - cmake .
 script: 
-  - make -j`getconf _NPROCESSORS_ONLN`
+  - make
   
 sudo: required
 dist: trusty
