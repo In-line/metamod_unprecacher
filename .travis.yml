@@ -16,6 +16,7 @@ addons:
     - g++-multilib
     - libc6-dev-i386
     - libc6-i386
+    - build-essential
 
 before_install:
   - lsb_release -c
@@ -33,14 +34,13 @@ install:
 #  - sudo apt-get install -y libboost1.55-all-dev
   - sudo apt-get --no-install-recommends -y install cxxtest;
 #  - sudo apt-get --no-install-recommends -y install cmake;
-  - sudo apt-get install build-essential
   - wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz
   - tar xf cmake-3.5.0.tar.gz
   - cd cmake-3.5.0
   - ./configure
   - make
-  - sudo apt-get install checkinstall
-  - sudo checkinstall
+  - sudo apt-get install -y checkinstall
+  - sudo checkinstall -y
   - cmake --version
   
 #  - sudo find / -type f -name "cxxtestgen*"
