@@ -10,9 +10,9 @@ cache:
 
 addons:
   apt:
-    sources:
-    - boost-latest
-    - ubuntu-toolchain-r/test
+  #   sources:
+  #  - boost-latest
+  #  - ubuntu-toolchain-r/test
     packages:
     - python-ply
     - libboost-all-dev
