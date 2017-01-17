@@ -5,7 +5,7 @@ compiler:
 before_install:
   - lsb_release -c
   - lsb_release -r
-  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu utopic main universe multiverse restricted'
+  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
   - sudo apt-key update
   - sudo apt-get -y update
