@@ -1,4 +1,4 @@
-## Metamod Unprecacher
+## Metamod Unprecacher  [![Build Status](https://travis-ci.org/In-line/metamod_unprecacher.svg?branch=master)](https://travis-ci.org/In-line/metamod_unprecacher)
 
 Blocks precache & resource usage
 
