@@ -54,7 +54,7 @@ bool Config::addOption(const std::string &title, Config::OptionType type, const 
 	return addOptionVariant(title, type, Config::VariantType(defaultValue));
 }
 
-bool Config::deleteOption(const std::__cxx11::string &title)
+bool Config::deleteOption(const std::string &title)
 {
 	options_.erase(title);
 	auto end = defaultOptions_.end();
@@ -107,7 +107,7 @@ std::pair<Config::OptionType, Config::VariantType> Config::getOption(const std::
 	return options_.at(title);
 }
 
-bool Config::setOption(const std::__cxx11::string &title, const Config::VariantType &newValue)
+bool Config::setOption(const std::string &title, const Config::VariantType &newValue)
 {
 	decltype(options_)::iterator position = options_.find(title);
 	if(position == options_.end())
@@ -123,22 +123,22 @@ bool Config::setOption(const std::__cxx11::string &title, const Config::VariantT
 	return true;
 }
 
-bool Config::setOption(const std::__cxx11::string &title, const char* newValue)
+bool Config::setOption(const std::string &title, const char* newValue)
 {
 	const std::string newValueStr = static_cast<std::string>(newValue);
 	return setOption(title, newValueStr);
 }
-bool Config::setOption(const std::__cxx11::string &title, const bool &newValue)
+bool Config::setOption(const std::string &title, const bool &newValue)
 {
 	return setOption(title, Config::VariantType(newValue));
 }
 
-bool Config::setOption(const std::__cxx11::string &title, const int &newValue)
+bool Config::setOption(const std::string &title, const int &newValue)
 {
 	return setOption(title, Config::VariantType(newValue));
 }
 
-bool Config::setOption(const std::__cxx11::string &title, const std::string &newValue)
+bool Config::setOption(const std::string &title, const std::string &newValue)
 {
 	return setOption(title, Config::VariantType(newValue));
 }
