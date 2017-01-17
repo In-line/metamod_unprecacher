@@ -33,7 +33,6 @@ else ()
    set (CMAKE_CXX_STANDARD 11)
 endif ()r)
 
-
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 	# -Wundef -Wlong-long -Wpadded
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra  -Wzero-as-null-pointer-constant -Weffc++ -Wunknown-pragmas")
