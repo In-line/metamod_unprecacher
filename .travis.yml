@@ -22,8 +22,8 @@ addons:
     - libc6-i386
     - build-essential
     - checkinstall
-    - gcc-6 
-    - g++-6
+    - gcc-4.8 
+    - g++-4.8
   
  
 before_install:
