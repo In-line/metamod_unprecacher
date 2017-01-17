@@ -9,7 +9,7 @@ before_install:
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
   - sudo apt-key update
-  - sudo dpkg --add-architecture -y i386
+  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
   - sudo apt-get -y update
 install:
   - sudo apt-get install -y ia32-libs
