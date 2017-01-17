@@ -11,7 +11,8 @@ cache:
 addons:
   apt:
     sources:
-    - boost-latest    
+    - boost-latest
+    - ubuntu-toolchain-r/test
     packages:
     - python-ply
     - libboost-all-dev
@@ -21,9 +22,10 @@ addons:
     - libc6-i386
     - build-essential
     - checkinstall
-    - gcc
-    - g++
-
+    - gcc-6 
+    - g++-6
+  
+ 
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
   - lsb_release -c
