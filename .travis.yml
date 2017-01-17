@@ -10,10 +10,11 @@ cache:
 
 addons:
   apt:
-  #   sources:
-  #  - boost-latest
-  #  - ubuntu-toolchain-r/test
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
+    - gcc-4.8
+    - g++-4.8
     - python-ply
     - libboost-all-dev
     - gcc-multilib
@@ -22,10 +23,7 @@ addons:
     - libc6-i386
     - build-essential
     - checkinstall
-    - gcc
-    - g++
   
- 
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
   - lsb_release -c
@@ -33,7 +31,7 @@ before_install:
 #  - sudo rm /etc/dpkg/dpkg.cfg.d/multiarch
 #  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
 #  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
-  - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
+#  - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
   - sudo apt-key update
 #  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
   - sudo apt-get -y update
@@ -43,8 +41,9 @@ install:
 #  - sudo apt-get install -y gcc-multilib g++-multilib
 #  - sudo apt-get install -y libboost1.55-all-dev   
 #  - sudo apt-get remove -y gcc g++
-  - sudo apt-get --no-install-recommends -y install gcc-4.8 g++-4.8
+#  - sudo apt-get --no-install-recommends -y install gcc-4.8 g++-4.8
   - sudo apt-get --no-install-recommends -y install cxxtest;
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 #  - sudo apt-get --no-install-recommends -y install cmake
   - 'if [ -n "$(find ../cmake/ -prune -empty)" ]; then
      wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz;
