@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 project(tester)
 set(CMAKE_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
-if
 find_package(CxxTest REQUIRED)
 #cmake_policy(SET CMP0040 NEW)
 
