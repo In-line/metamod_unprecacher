@@ -41,7 +41,7 @@ install:
 #  - sudo apt-get --no-install-recommends -y install cmake;
   - wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz
   - tar xf cmake-3.5.0.tar.gz
-  - rsync -a cmake-3.5.0 cmake
+  - rsync -a -v /cmake-3.5.0/ /cmake/
   - cd cmake
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
