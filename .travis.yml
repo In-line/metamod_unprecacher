@@ -18,10 +18,10 @@ install:
   - sudo apt-get install -y gcc-multilib g++-multilib
   - sudo apt-get --no-install-recommends -y install cxxtest;
   - sudo apt-get --no-install-recommends -y install cmake;
-  - sudo find / -type f -name "cxxtestgen*"
+#  - sudo find / -type f -name "cxxtestgen*"
   - sudo ln /usr/share/cxxtest/cxxtest/cxxtestgen.py /usr/bin/cxxtestgen.py
-  - sudo find / -type f -name "cxxtestgen*"
-  - echo $PATH
+#  - sudo find / -type f -name "cxxtestgen*"
+#  - echo $PATH
 before_script:
   - cmake .
 script: make
