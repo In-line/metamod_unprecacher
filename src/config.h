@@ -33,6 +33,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <memory>
 #include "logger.h"
 
 #include <string>
