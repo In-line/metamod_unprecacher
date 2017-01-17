@@ -8,7 +8,8 @@ before_script:
   - sudo apt-get install -y python python-ply
   - wget --timestamping https://github.com/CxxTest/cxxtest/releases/download/4.4/cxxtest-4.4.tar.gz
   - tar xzf cxxtest-4.4.tar.gz
-  - export "CXXTEST=${PWD}/cxxtest-4.4"
+  - mv cxxtest-4.4 cxxtest
+  - export "CXXTEST=${PWD}/cxxtest"
   - cmake .
 
 script: make
