@@ -39,7 +39,8 @@ install:
 #  - sudo apt-get install -y ia32-libs
 #  - sudo apt-get install -y libc6-dev-i386 libc6-i386
 #  - sudo apt-get install -y gcc-multilib g++-multilib
-#  - sudo apt-get install -y libboost1.55-all-dev
+#  - sudo apt-get install -y libboost1.55-all-dev   
+  - sudo apt-get remove -y gcc g++
   - sudo apt-get --no-install-recommends -y install gcc-4.8 g++-4.8
   - sudo apt-get --no-install-recommends -y install cxxtest;
 #  - sudo apt-get --no-install-recommends -y install cmake
