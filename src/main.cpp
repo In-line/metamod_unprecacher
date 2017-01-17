@@ -210,7 +210,7 @@ void loadConfiguration()
 		{
 			logFile << logPrefix << mapName;			
 			char hms[64];
-			if(strftime(hms, sizeof(hms), " %H:%M:%S - ", lovalTime) > 0) 
+			if(strftime(hms, sizeof(hms), " %H:%M:%S - ", localTime) > 0) 
 				logFile << hms;
 			logFile << str << std::endl;
 		}
