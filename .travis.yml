@@ -31,8 +31,8 @@ before_install:
   - lsb_release -c
   - lsb_release -r
 #  - sudo rm /etc/dpkg/dpkg.cfg.d/multiarch
-  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
-  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
+#  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
+#  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
   - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
   - sudo apt-key update
 #  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
