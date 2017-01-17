@@ -67,7 +67,7 @@ void Module::setConfig(const Config &config)
 	config_ = config;
 }
 
-void Module::analyzeLoggerVerbosityString(const std::__cxx11::string &str)
+void Module::analyzeLoggerVerbosityString(const std::string &str)
 {
 	std::size_t categoryStart = static_cast<std::size_t>(Logger::CategoryType::Debug);
 	std::size_t categoryMax = static_cast<std::size_t>(Logger::CategoryType::LastElement) + 1;
