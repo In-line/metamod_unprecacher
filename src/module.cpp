@@ -249,7 +249,7 @@ void Module::revalidateEnds()
 	mapsEnds_[MAP_SOUNDS] = maps_[MAP_SOUNDS].end();
 }
 
-void Module::loadConfig(const std::__cxx11::string &path)
+void Module::loadConfig(const std::string &path)
 {
 	config_.loadConfig(path);
 	updateSettings();
