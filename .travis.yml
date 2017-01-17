@@ -5,12 +5,15 @@ compiler:
 
 cache:
   apt: true
+  directories:
+    - cmake
 
 addons:
   apt:
     sources:
     - boost-latest    
     packages:
+    - python-ply
     - libboost-all-dev
     - gcc-multilib
     - g++-multilib
@@ -38,7 +41,8 @@ install:
 #  - sudo apt-get --no-install-recommends -y install cmake;
   - wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz
   - tar xf cmake-3.5.0.tar.gz
-  - cd cmake-3.5.0
+  - rsync -a cmake-3.5.0 cmake
+  - cd cmake
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
   - sudo checkinstall -y
