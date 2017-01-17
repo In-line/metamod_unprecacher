@@ -32,7 +32,15 @@ install:
 #  - sudo apt-get install -y gcc-multilib g++-multilib
 #  - sudo apt-get install -y libboost1.55-all-dev
   - sudo apt-get --no-install-recommends -y install cxxtest;
-  - sudo apt-get --no-install-recommends -y install cmake;
+#  - sudo apt-get --no-install-recommends -y install cmake;
+  - sudo apt-get install build-essential
+  - wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz
+  - tar xf cmake-3.5.0.tar.gz
+  - cd cmake-3.5.0
+  - ./configure
+  - make
+  - sudo apt-get install checkinstall
+  - sudo checkinstall
   - cmake --version
   
 #  - sudo find / -type f -name "cxxtestgen*"
