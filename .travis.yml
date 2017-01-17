@@ -30,7 +30,7 @@ before_install:
   - echo `getconf _NPROCESSORS_ONLN`
   - lsb_release -c
   - lsb_release -r
-  - sudo rm /etc/dpkg/dpkg.cfg.d/multiarch
+#  - sudo rm /etc/dpkg/dpkg.cfg.d/multiarch
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
   - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
   - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
