@@ -21,7 +21,6 @@ addons:
     - libc6-i386
     - build-essential
     - checkinstall
-    - aria2c
 
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
