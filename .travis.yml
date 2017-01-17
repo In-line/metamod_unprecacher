@@ -11,9 +11,9 @@ before_install:
   - sudo apt-key update
   - sudo apt-get -y update
 install:
-  - sudo apt-get --no-install-recommends -y ia32-libs
-  - sudo apt-get --no-install-recommends -y libc6-dev-i386 libc6-i386
-  - sudo apt-get --no-install-recommends -y gcc-multilib g++-multilib
+  - sudo apt-get install -y ia32-libs
+  - sudo apt-get install -y libc6-dev-i386 libc6-i386
+  - sudo apt-get install -y gcc-multilib g++-multilib
   - sudo apt-get --no-install-recommends -y install cxxtest;
   - sudo apt-get --no-install-recommends -y install cmake;
 #  - sudo find / -type f -name "cxxtestgen*"
