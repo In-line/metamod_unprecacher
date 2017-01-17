@@ -21,6 +21,8 @@ addons:
     - libc6-i386
     - build-essential
     - checkinstall
+    - gcc
+    - g++
 
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
