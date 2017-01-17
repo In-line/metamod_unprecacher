@@ -42,10 +42,12 @@ install:
 #  - sudo apt-get install -y libboost1.55-all-dev
   - sudo apt-get --no-install-recommends -y install gcc-4.8 g++-4.8
   - sudo apt-get --no-install-recommends -y install cxxtest;
-#  - sudo apt-get --no-install-recommends -y install cmake;
+#  - sudo apt-get --no-install-recommends -y install cmake
+  - if [ ! "$(ls -A $DIR)" ]; then
   - wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz
   - tar xf cmake-3.5.0.tar.gz
   - rsync -r --checksum cmake-3.5.0/ ../cmake/
+  - fi
   - cd ../cmake
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
