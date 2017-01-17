@@ -8,8 +8,10 @@ cache:
 
 addons:
   apt:
+    sources:
+    - boost-latest    
     packages:
-    - libboost1.55-all-dev
+    - libboost-all-dev
     - gcc-multilib
     - g++-multilib
 
