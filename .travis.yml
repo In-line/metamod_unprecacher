@@ -6,7 +6,7 @@ compiler:
 cache:
   apt: true
   directories:
-    - cmake
+    - ../cmake
 
 addons:
   apt:
