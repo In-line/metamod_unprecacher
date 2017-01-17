@@ -33,7 +33,8 @@ install:
 #  - sudo apt-get install -y libboost1.55-all-dev
   - sudo apt-get --no-install-recommends -y install cxxtest;
   - sudo apt-get --no-install-recommends -y install cmake;
-
+  - cmake --version
+  
 #  - sudo find / -type f -name "cxxtestgen*"
   - sudo ln /usr/share/cxxtest/cxxtest/cxxtestgen.py /usr/bin/cxxtestgen.py
 #  - sudo find / -type f -name "cxxtestgen*"
