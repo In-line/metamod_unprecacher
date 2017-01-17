@@ -21,11 +21,17 @@ file(GLOB_RECURSE SOURCE_FILES ${MAIN_SOURCE}/*.h ${MAIN_SOURCE}/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${SOURCE_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32 -static-libstdc++")
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
 
 add_library(${PROJECT_NAME}_static STATIC ${SRC_LIST} ${SOURCE_FILES})
 set_target_properties(${PROJECT_NAME}_static PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-target_compile_features(${PROJECT_NAME}_static PRIVATE cxx_range_for)
+
+if (CMAKE_VERSION VERSION_LESS "3.1")
+   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+     set (CMAKE_CXX_FLAGS "--std=gnu++11 ${CMAKE_CXX_FLAGS}")
+   endif ()
+else ()
+   set (CMAKE_CXX_STANDARD 11)
+endif ()r)
 
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
