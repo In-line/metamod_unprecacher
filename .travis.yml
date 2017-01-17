@@ -11,7 +11,7 @@ before_install:
   - sudo apt-get -y update
 install:
   - sudo apt-get --no-install-recommends -y install cxxtest;
-  - find /usr/bin -type f -name "cxxtestgen*"
+  - sudo find / -type f -name "cxxtestgen*"
   - echo $PATH
 before_script:
   - cmake .
