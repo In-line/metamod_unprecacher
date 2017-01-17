@@ -47,6 +47,7 @@ install:
   - make -j`getconf _NPROCESSORS_ONLN`
   - sudo checkinstall -y
   - cmake --version
+  - cd -
   
 #  - sudo find / -type f -name "cxxtestgen*"
 #  - sudo ln /usr/share/cxxtest/cxxtest/cxxtestgen.py /usr/bin/cxxtestgen.py
