@@ -23,8 +23,8 @@ addons:
     - g++-6-multilib
     - libc6-dev-i386
     - libc6-i386
-    - build-essential
-    - checkinstall
+#    - build-essential
+#    - checkinstall
     - cxxtest
   
 before_install:
@@ -56,7 +56,8 @@ install:
   - cd ../cmake
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
-  - sudo checkinstall -y
+#  - sudo checkinstall -y      
+  - sudo make install
   - cmake --version
   - cd -
   
