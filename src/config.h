@@ -34,11 +34,13 @@
 #define CONFIG_H
 
 #include <memory>
-#include "logger.h"
-
+#include <vector>
 #include <string>
 #include <unordered_map>
 #include <boost/variant.hpp>
+
+#include "logger.h"
+
 class Config
 {
 public:
