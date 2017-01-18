@@ -17,14 +17,15 @@ addons:
     - g++-6
     - python-ply
     - libboost-all-dev
-    - gcc-multilib
+#    - gcc-multilib
     - gcc-6-multilib
-    - g++-multilib
+#    - g++-multilib
     - g++-6-multilib
     - libc6-dev-i386
     - libc6-i386
     - build-essential
     - checkinstall
+    - cxxtest
   
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
@@ -34,9 +35,9 @@ before_install:
 #  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
 #  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
 #  - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
-  - sudo apt-key update
+#  - sudo apt-key update
 #  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
-  - sudo apt-get -y update
+#  - sudo apt-get -y update
 install:
 #  - sudo apt-get install -y ia32-libs
 #  - sudo apt-get install -y libc6-dev-i386 libc6-i386
@@ -44,7 +45,7 @@ install:
 #  - sudo apt-get install -y libboost1.55-all-dev   
 #  - sudo apt-get remove -y gcc g++
 #  - sudo apt-get --no-install-recommends -y install gcc-4.8 g++-4.8
-  - sudo apt-get --no-install-recommends -y install cxxtest;
+#  - sudo apt-get --no-install-recommends -y install cxxtest;
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 #  - sudo apt-get --no-install-recommends -y install cmake
   - 'if [ -n "$(find ../cmake/ -prune -empty)" ]; then
