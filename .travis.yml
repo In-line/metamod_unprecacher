@@ -23,7 +23,6 @@ addons:
     - g++-6-multilib
     - libc6-dev-i386
     - libc6-i386
-    - linux-libc-dev:i386
 #    - build-essential
 #    - checkinstall
     - cxxtest
