@@ -23,29 +23,13 @@ addons:
     - g++-6-multilib
     - libc6-dev-i386
     - libc6-i386
-#    - build-essential
-#    - checkinstall
     - cxxtest
   
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
   - lsb_release -c
   - lsb_release -r
-#  - sudo rm /etc/dpkg/dpkg.cfg.d/multiarch
-#  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu vivid main universe multiverse restricted'
-#  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu trusty main universe multiverse restricted'
-#  - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
-#  - sudo apt-key update
-#  - sudo sh -c "echo 'foreign-architecture i386' > /etc/dpkg/dpkg.cfg.d/multiarch"
-#  - sudo apt-get -y update
 install:
-#  - sudo apt-get install -y ia32-libs
-#  - sudo apt-get install -y libc6-dev-i386 libc6-i386
-#  - sudo apt-get install -y gcc-multilib g++-multilib
-#  - sudo apt-get install -y libboost1.55-all-dev   
-#  - sudo apt-get remove -y gcc g++
-#  - sudo apt-get --no-install-recommends -y install gcc-4.8 g++-4.8
-#  - sudo apt-get --no-install-recommends -y install cxxtest;
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 #  - sudo apt-get --no-install-recommends -y install cmake
   - 'if [ -n "$(find ../cmake/ -prune -empty)" ]; then
@@ -56,19 +40,13 @@ install:
   - cd ../cmake
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
-#  - sudo checkinstall -y      
   - sudo make install
   - cmake --version
   - cd -
-  
-#  - sudo find / -type f -name "cxxtestgen*"
-#  - sudo ln /usr/share/cxxtest/cxxtest/cxxtestgen.py /usr/bin/cxxtestgen.py
-#  - sudo find / -type f -name "cxxtestgen*"
-#  - echo $PATH
 before_script:
   - cmake .
 script: 
-  - make #-j`getconf _NPROCESSORS_ONLN`
+  - make -j`getconf _NPROCESSORS_ONLN`
   
 sudo: required
 dist: trusty
