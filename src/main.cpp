@@ -208,7 +208,11 @@ void loadConfiguration()
 			module->getLoggerRef()->consoleFunction()(logPrefix + "[Error while writing in file] " + str);
 		else
 		{
-			logFile << logPrefix << mapName << std::put_time(localTime, " %H:%M:%S - ") << str << std::endl;
+			logFile << logPrefix << mapName;			
+			char hms[64];
+			if(strftime(hms, sizeof(hms), " %H:%M:%S - ", localTime) > 0) 
+				logFile << hms;
+			logFile << str << std::endl;
 		}
 	});
 

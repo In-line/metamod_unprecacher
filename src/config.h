@@ -33,11 +33,14 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "logger.h"
-
+#include <memory>
+#include <vector>
 #include <string>
 #include <unordered_map>
 #include <boost/variant.hpp>
+
+#include "logger.h"
+
 class Config
 {
 public:

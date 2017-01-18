@@ -67,7 +67,7 @@ void Module::setConfig(const Config &config)
 	config_ = config;
 }
 
-void Module::analyzeLoggerVerbosityString(const std::__cxx11::string &str)
+void Module::analyzeLoggerVerbosityString(const std::string &str)
 {
 	std::size_t categoryStart = static_cast<std::size_t>(Logger::CategoryType::Debug);
 	std::size_t categoryMax = static_cast<std::size_t>(Logger::CategoryType::LastElement) + 1;
@@ -249,7 +249,7 @@ void Module::revalidateEnds()
 	mapsEnds_[MAP_SOUNDS] = maps_[MAP_SOUNDS].end();
 }
 
-void Module::loadConfig(const std::__cxx11::string &path)
+void Module::loadConfig(const std::string &path)
 {
 	config_.loadConfig(path);
 	updateSettings();
