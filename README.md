@@ -5,6 +5,8 @@ Blocks precache & resource usage
 ## Compilation
 CMake, Boost, G++ packages may be required.
 <pre>
+sudo apt-get install libboost-all-dev cxxtest cmake gcc g++
+sudo apt-get install gcc-multilib g++-multilib libc6-dev-i386 libc6-i386 # If cross compiling from 64 bit linux  
 cmake .
 make
 </pre>
