@@ -26,6 +26,7 @@ addons:
     - cxxtest
   
 before_install:
+  - cat /proc/meminfo
   - echo `getconf _NPROCESSORS_ONLN`
   - lsb_release -c
   - lsb_release -r
