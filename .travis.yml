@@ -40,7 +40,7 @@ install:
   - cd ../cmake
   - ./configure
   - make -j`getconf _NPROCESSORS_ONLN`
-  - sudo make install
+  - make install
   - cmake --version
   - cd -
 before_script:
@@ -48,5 +48,5 @@ before_script:
 script: 
   - make -j`getconf _NPROCESSORS_ONLN`
   
-sudo: required
+sudo: false
 dist: trusty
