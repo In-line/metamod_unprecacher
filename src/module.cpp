@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2016 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -164,9 +164,7 @@ bool Module::readLine(const std::string &lineRef)
 				path = extensionPrefixes[currentMapType] + path;
 			break;
 	}
-
-
-
+	
 	{
 		auto size = tokens.size();
 		if(size > 1)
@@ -204,9 +202,9 @@ void Module::loadLists(const std::string &path)
 	{
 		logger_->debug(std::string(__FUNCTION__) + " Try to open " + path);
 		inputFile.open (
-					path,
-					std::ios::in
-					);
+		      path,
+		      std::ios::in
+		);
 
 		if(!inputFile)
 		{

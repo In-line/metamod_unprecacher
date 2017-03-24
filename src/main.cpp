@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2016 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -103,8 +103,8 @@ C_DLLEXPORT int Meta_Query(const char * /*ifvers */, plugin_info_t **pPlugInfo, 
 }
 
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
-														META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals,
-														gamedll_funcs_t *pGamedllFuncs)
+                            META_FUNCTIONS *pFunctionTable, meta_globals_t *pMGlobals,
+                            gamedll_funcs_t *pGamedllFuncs)
 {
 
 	if(!pMGlobals) {
@@ -202,8 +202,7 @@ void loadConfiguration()
 		auto localTime = std::localtime(&curTime);
 
 		std::ofstream logFile((*pluginDirPath + "/" + "logs" + "/" +
-													 str_put_time(localTime, "L%d%m%y") + ".log"), std::ios::out | std::ios::app);
-
+		                       str_put_time(localTime, "L%d%m%y") + ".log"), std::ios::out | std::ios::app);
 		if(!logFile)
 			module->getLoggerRef()->consoleFunction()(logPrefix + "[Error while writing in file] " + str);
 		else
@@ -395,7 +394,7 @@ void pfnServerDeactivate()
 	RETURN_META(MRES_IGNORED);
 }
 
-int	pfnSpawn(edict_t*)
+int pfnSpawn(edict_t*)
 {
 	if(g_calledSpawn)
 	{
@@ -436,7 +435,7 @@ int	pfnSpawn(edict_t*)
 }
 
 DLL_FUNCTIONS gFunctionTable;
-C_DLLEXPORT	int	GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int*/*interfaceVersion*/)
+C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int* /*interfaceVersion*/)
 {
 	memset(&gFunctionTable, 0, sizeof(DLL_FUNCTIONS));
 

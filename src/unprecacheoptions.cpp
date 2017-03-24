@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2016 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -55,10 +55,10 @@ void UnprecacheOptions::setReplacedPath(const std::string &replacedPath)
 
 UnprecacheOptions::UnprecacheOptions()
 	:
-		deleteEntity_(false),
-		notDeleteHuman_(false),
-		replace_(false),
-		replacedPath_()
+	deleteEntity_(false),
+	notDeleteHuman_(false),
+	replace_(false),
+	replacedPath_()
 {
 
 }
@@ -66,16 +66,16 @@ UnprecacheOptions::UnprecacheOptions()
 bool UnprecacheOptions::operator ==(const UnprecacheOptions &obj) const
 {
 	return std::make_tuple(this->isNotDefault(),
-												 this->deleteEntity(),
-												 this->notDeleteHuman(),
-												 this->replace(),
-												 this->replacedPath())
-			==
-			std::make_tuple(obj.isNotDefault(),
-											obj.deleteEntity(),
-											obj.notDeleteHuman(),
-											obj.replace(),
-											obj.replacedPath());
+	                       this->deleteEntity(),
+	                       this->notDeleteHuman(),
+	                       this->replace(),
+	                       this->replacedPath())
+		==
+	       std::make_tuple(obj.isNotDefault(),
+	                       obj.deleteEntity(),
+	                       obj.notDeleteHuman(),
+	                       obj.replace(),
+	                       obj.replacedPath());
 }
 
 bool UnprecacheOptions::operator !=(const UnprecacheOptions &obj) const

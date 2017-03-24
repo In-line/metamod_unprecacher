@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2016 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -83,7 +83,7 @@ bool Logger::getCategoryDisplayed(const Logger::CategoryType &category) const no
 
 void Logger::setCategoryDisplayed(const Logger::CategoryType &category, bool flag) noexcept
 {
-		setCategoryDisplayed(enum_index(category), flag);
+	setCategoryDisplayed(enum_index(category), flag);
 }
 
 void Logger::setCategoryDisplayed(const std::size_t category, bool flag) noexcept
