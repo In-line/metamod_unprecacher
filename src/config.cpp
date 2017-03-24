@@ -36,10 +36,10 @@
 #include <algorithm>
 Config::Config(const std::shared_ptr<Logger> &logger)
 	:
-		logger_(logger),
-		options_(),
-		defaultOptions_(),
-		configWasLoadedOnce_(false)
+	logger_(logger),
+	options_(),
+	defaultOptions_(),
+	configWasLoadedOnce_(false)
 {
 }
 
@@ -146,7 +146,6 @@ bool Config::setOption(const std::string &title, const std::string &newValue)
 void Config::loadConfig(const std::string &path)
 {
 	std::ifstream file;
-
 	file.open(path);
 
 	if(!file)
