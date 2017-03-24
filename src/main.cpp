@@ -202,8 +202,7 @@ void loadConfiguration()
 		auto localTime = std::localtime(&curTime);
 
 		std::ofstream logFile((*pluginDirPath + "/" + "logs" + "/" +
-													 str_put_time(localTime, "L%d%m%y") + ".log"), std::ios::out | std::ios::app);
-
+		                       str_put_time(localTime, "L%d%m%y") + ".log"), std::ios::out | std::ios::app);
 		if(!logFile)
 			module->getLoggerRef()->consoleFunction()(logPrefix + "[Error while writing in file] " + str);
 		else
