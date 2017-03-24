@@ -14,7 +14,6 @@ addons:
     packages:
     - gcc-6
     - g++-6
-    - python-ply
     - libboost-dev
     - gcc-multilib
     - gcc-6-multilib
@@ -32,6 +31,7 @@ before_install:
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 before_script:
+  - cmake --version
   - cmake .
 script: 
   - make -j$((2 * `getconf _NPROCESSORS_ONLN`))
