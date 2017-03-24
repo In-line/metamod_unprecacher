@@ -5,18 +5,17 @@ compiler:
 
 cache:
   apt: true
-  directories:
-    - ../cmake
 
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
+    - george-edison55/cmake-3.x
     packages:
     - gcc-6
     - g++-6
     - python-ply
-    - libboost-all-dev
+    - libboost-dev
     - gcc-multilib
     - gcc-6-multilib
     - g++-multilib
@@ -24,6 +23,7 @@ addons:
     - libc6-dev-i386
     - libc6-i386
     - cxxtest
+    - cmake
   
 before_install:
   - echo `getconf _NPROCESSORS_ONLN`
@@ -31,22 +31,15 @@ before_install:
   - lsb_release -r
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
-#  - sudo apt-get --no-install-recommends -y install cmake
-  - 'if [ -n "$(find ../cmake/ -prune -empty)" ]; then
-     wget https://cmake.org/files/v3.5/cmake-3.5.0.tar.gz;
-     tar xf cmake-3.5.0.tar.gz;
-     rsync -r --checksum cmake-3.5.0/ ../cmake/;
-     fi'
-  - cd ../cmake
   - ./configure
-  - make -j`getconf _NPROCESSORS_ONLN`
+  - make -j$((2 * `getconf _NPROCESSORS_ONLN`))
   - sudo make install
   - cmake --version
   - cd -
 before_script:
   - cmake .
 script: 
-  - make -j`getconf _NPROCESSORS_ONLN`
+  - make -j$((2 * `getconf _NPROCESSORS_ONLN`))
   
 sudo: required
 dist: trusty
