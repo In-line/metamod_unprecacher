@@ -436,7 +436,7 @@ int pfnSpawn(edict_t*)
 }
 
 DLL_FUNCTIONS gFunctionTable;
-C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int*/*interfaceVersion*/)
+C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int* /*interfaceVersion*/)
 {
 	memset(&gFunctionTable, 0, sizeof(DLL_FUNCTIONS));
 
