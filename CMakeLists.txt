@@ -1,9 +1,8 @@
 project(unprecacher)
 cmake_minimum_required(VERSION 2.8)
-aux_source_directory(src SRC_LIST)
 
 set(THIRD_PARTY "${CMAKE_SOURCE_DIR}/third_party")
-set(MAIN_SOURCE "${CMAKE_SOURCE_DIR}/src")
+set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
 set(METAMOD "${THIRD_PARTY}/metamod-hl1/metamod")
 set(HLSDK "${THIRD_PARTY}/hlsdk")
@@ -12,12 +11,10 @@ set(API_INCLUDE_PATH "${HLSDK}/common ${HLSDK}/dlls ${HLSDK}/engine ${HLSDK}/pm_
 
 string(REPLACE " " ";" API_INCLUDE_PATH_LIST ${API_INCLUDE_PATH})
 include_directories(${API_INCLUDE_PATH_LIST})
-foreach(ONE_PATH ${API_INCLUDE_PATH_LIST})
-file(GLOB API_INCLUDE_FILES_TEMP ${ONE_PATH}/*.h)
-set(API_INCLUDE_FILES "${API_INCLUDE_FILES};${API_INCLUDE_FILES_TEMP}")
-endforeach()
+
 add_subdirectory(test)
-file(GLOB_RECURSE SOURCE_FILES ${MAIN_SOURCE}/*.h ${MAIN_SOURCE}/*.cpp)
+
+file(GLOB_RECURSE SOURCE_FILES ${SRC_DIR}/*.h ${SRC_DIR}/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${SOURCE_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32 -static-libstdc++")
@@ -40,5 +37,3 @@ endif()
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	 add_definitions(-D_DEBUG)
 endif()
-
-
