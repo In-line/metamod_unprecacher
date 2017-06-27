@@ -61,13 +61,13 @@ static META_FUNCTIONS gMetaFunctionTable = {
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,
 	"Ultimate Unprecacher",
-	"Beta 1.0",
+	"Beta 2.0",
 	"2016/05/18",
 	"Alik Aslanyan <cplusplus256@gmail.com>",
 	"https://github.com/in-line/metamod_unprecacher",
 	"",
-	PT_ANYTIME,
-	PT_ANYTIME,
+	PT_CHANGELEVEL,
+	PT_CHANGELEVEL,
 };
 
 meta_globals_t *gpMetaGlobals;

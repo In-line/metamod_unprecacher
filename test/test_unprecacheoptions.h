@@ -8,22 +8,22 @@
 class TestUnprecacheOptions : public CxxTest::TestSuite
 {
 public:
-	void Test_analyzeBitSetAlphabitePattern()
+	void Test_analyzeBitSetAlphabetPattern()
 	{
 		UnprecacheOptions options;
 
 		std::string testPattern = "abc  ";
-		TS_ASSERT_THROWS_NOTHING(UnprecacheOptions::analyzeBitSetAlphabitePattern(testPattern));
+		TS_ASSERT_THROWS_NOTHING(UnprecacheOptions::analyzeBitSetAlphabetPattern(testPattern));
 
-		options = UnprecacheOptions::analyzeBitSetAlphabitePattern(testPattern);
+		options = UnprecacheOptions::analyzeBitSetAlphabetPattern(testPattern);
 
 		TS_ASSERT_EQUALS(options.isNotDefault(), true);
 		TS_ASSERT_EQUALS(options.deleteEntity(), true);
 		TS_ASSERT_EQUALS(options.notDeleteHuman(), true);
 		TS_ASSERT_EQUALS(options.replace(), true);
-		TS_ASSERT_THROWS_ANYTHING(UnprecacheOptions::analyzeBitSetAlphabitePattern("jlgke3$%%^#@@!@#$%  "));
+		TS_ASSERT_THROWS_ANYTHING(UnprecacheOptions::analyzeBitSetAlphabetPattern("jlgke3$%%^#@@!@#$%  "));
 
-		options = UnprecacheOptions::analyzeBitSetAlphabitePattern("  ");
+		options = UnprecacheOptions::analyzeBitSetAlphabetPattern("  ");
 
 		TS_ASSERT_EQUALS(options.isNotDefault(), false);
 		TS_ASSERT_EQUALS(options.deleteEntity(), false);

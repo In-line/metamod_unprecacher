@@ -31,9 +31,12 @@
  */
 
 #include "config.h"
+#include "helper/shared.h"
 #include "helper/string_utils.h"
+
 #include <fstream>
 #include <algorithm>
+
 Config::Config(const std::shared_ptr<Logger> &logger)
 	:
 	logger_(logger),
@@ -162,7 +165,7 @@ void Config::loadConfig(const std::string &path)
 	std::string line;
 	while(std::getline(file, line))
 	{
-		logger_->debug(std::string(__FUNCTION__) + " Reading line" + line);
+		logger_->debug(FNAME + " Reading line" + line);
 		this->readLine(line);
 	}
 
@@ -222,19 +225,19 @@ bool Config::readLine(const std::string &lineRef)
 	std::string line = trim(removeComments(lineRef));
 	if(line.empty())
 	{
-		logger_->debug(std::string(__FUNCTION__) + " Line is empty. Return.");
+		logger_->debug(FNAME + " Line is empty. Return.");
 		return false;
 	}
 	std::string::size_type equalitySignPos = line.find("=");
 
 	if(equalitySignPos == std::string::npos)
 	{
-		logger_->warning(std::string(__FUNCTION__) + " Equality sign not found. Return.");
+		logger_->warning(FNAME + " Equality sign not found. Return.");
 		return false;
 	}
 	std::string left = trim(line.substr(0, equalitySignPos));
 	std::string right = trim(line.substr(equalitySignPos + 1, std::string::npos));
-	logger_->debug(std::string(__FUNCTION__) + " Left right: " + left + " = " + right);
+	logger_->debug(FNAME + " Left right: " + left + " = " + right);
 	try
 	{
 		decltype(options_)::mapped_type &value = options_.at(left);
@@ -258,7 +261,7 @@ bool Config::readLine(const std::string &lineRef)
 			try {
 				switchMap.at(localCopy)();
 			} catch (std::exception&) {
-				logger_->error(std::string(__FUNCTION__) + " Exception occured. Return from BF");
+				logger_->error(FNAME + " Exception occured. Return from BF");
 				return false;
 			}
 			return true;
@@ -269,7 +272,7 @@ bool Config::readLine(const std::string &lineRef)
 			case Config::OptionType::Boolean:
 			{
 				bool result = BooleanFunction(right);
-				logger_->debug(std::string(__FUNCTION__) + " BooleanFunction(" + right + ") result = " + std::to_string(result));
+				logger_->debug(FNAME + " BooleanFunction(" + right + ") result = " + std::to_string(result));
 				break;
 			}
 			case Config::OptionType::Integer:
@@ -284,7 +287,7 @@ bool Config::readLine(const std::string &lineRef)
 			}
 			case Config::OptionType::String:
 			{
-				logger_->debug(std::string(__FUNCTION__) + " Value.second = " + right);
+				logger_->debug(FNAME + " Value.second = " + right);
 				value.second = right;
 				break;
 			}
@@ -292,7 +295,7 @@ bool Config::readLine(const std::string &lineRef)
 
 	}
 	catch (std::exception &e) {
-		logger_->error(std::string(__FUNCTION__) + " Exception occured. " + e.what() + " Continue.");
+		logger_->error(FNAME + " Exception occured. " + e.what() + " Continue.");
 		return false;
 	}
 

@@ -31,6 +31,7 @@ before_install:
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 before_script:
+  - sed -i '/#define C_DLLEXPORT/c\//#define C_DLLEXPORT' third_party/metamod-hl1/metamod/osdep.h
   - cmake --version
   - cmake .
 script: 

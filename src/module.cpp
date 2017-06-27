@@ -120,14 +120,14 @@ bool Module::readLine(const std::string &lineRef)
 	std::vector<std::string> tokens;
 	std::string line = lineRef;
 
-	logger_->debug(std::string(__FUNCTION__) + " Line raw text: " + line);
+	logger_->debug(FNAME + " Line raw text: " + line);
 
 	line = trim(removeComments(line));
-	logger_->debug(std::string(__FUNCTION__) + " Line text after: " + line);
+	logger_->debug(FNAME + " Line text after: " + line);
 
 	if(line.empty())
 	{
-		logger_->debug(std::string(__FUNCTION__) + " Line is empty. Continue to next.");
+		logger_->debug(FNAME + " Line is empty. Continue to next.");
 		return false;
 	}
 	tokens = parseString(line, true);
@@ -140,7 +140,7 @@ bool Module::readLine(const std::string &lineRef)
 		// Template: ".***"
 		extension = path.substr(path.size() - 4, std::string::npos);
 	} catch (std::out_of_range) {
-		logger_->error(std::string(__FUNCTION__) + " Cannot find extension. Continue.");
+		logger_->error(FNAME + " Cannot find extension. Continue.");
 		return false;
 	}
 
@@ -149,7 +149,7 @@ bool Module::readLine(const std::string &lineRef)
 	try {
 		currentMapType = extensions.at(extension);
 	} catch (std::exception&) {
-		logger_->error(std::string(__FUNCTION__) + " Unrecognized extension. Continue");
+		logger_->error(FNAME + " Unrecognized extension. Continue");
 		return false;
 	}
 
@@ -170,10 +170,10 @@ bool Module::readLine(const std::string &lineRef)
 		if(size > 1)
 		{
 			try {
-				options = UnprecacheOptions::analyzeBitSetAlphabitePattern(tokens[1]);
+				options = UnprecacheOptions::analyzeBitSetAlphabetPattern(tokens[1]);
 			} catch (std::exception &e) {
-				logger_->error(std::string(__FUNCTION__) + " Exception when reading alphabite patter " + std::string(e.what()));
-				logger_->error(std::string(__FUNCTION__) + " Reseting unprecache options");
+				logger_->error(FNAME + " Exception when reading alphabet pattern " + e.what());
+				logger_->error(FNAME + " Reseting unprecache options");
 				options = UnprecacheOptions();
 			}
 
@@ -183,7 +183,7 @@ bool Module::readLine(const std::string &lineRef)
 					options.setReplacedPath(tokens[2]);
 				else
 				{
-					logger_->error(std::string(__FUNCTION__) + " Can not find replace path, disabling replace function");
+					logger_->error(FNAME + " Can not find replace path, disabling replace function");
 					options.setReplace(false);
 				}
 			}
@@ -191,7 +191,7 @@ bool Module::readLine(const std::string &lineRef)
 		}
 	}
 	// Insert our job result
-	logger_->debug(std::string(__FUNCTION__) + " Insert to mapType " + extensionPrefixes[currentMapType]);
+	logger_->debug(FNAME + " Insert to mapType " + extensionPrefixes[currentMapType]);
 	maps_[currentMapType][path] = options;
 	return true;
 }
@@ -200,7 +200,7 @@ void Module::loadLists(const std::string &path)
 {
 	std::fstream inputFile;
 	{
-		logger_->debug(std::string(__FUNCTION__) + " Try to open " + path);
+		logger_->debug(FNAME + " Try to open " + path);
 		inputFile.open (
 		      path,
 		      std::ios::in
@@ -208,26 +208,26 @@ void Module::loadLists(const std::string &path)
 
 		if(!inputFile)
 		{
-			logger_->warning(std::string(__FUNCTION__) + " Cannot open, try to create");
+			logger_->warning(FNAME + " Cannot open, try to create");
 			inputFile.open(path, std::ios::out | std::ios::in | std::ios::trunc);
 		}
 
 		if(!inputFile)
 		{
-			logger_->criticalError(std::string(__FUNCTION__) + " Fail. Throwing exception...");
+			logger_->criticalError(FNAME + " Fail. Throwing exception...");
 			throw std::ios::failure("Cannot create/open file: " + path);
 		}
 	}
 	{
 		// Line has format: "SOME_PATH" "flags" "additional"
-		logger_->debug(std::string(__FUNCTION__) + " Start file reading");
+		logger_->debug(FNAME + " Start file reading");
 
 		std::string line;
 		while(getline(inputFile, line))
 		{
 			this->readLine(line);
 		}
-		logger_->debug(std::string(__FUNCTION__) + " Input file close");
+		logger_->debug(FNAME + " Input file close");
 		inputFile.close();
 	}
 	this->revalidateEnds();
