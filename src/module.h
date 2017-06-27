@@ -40,13 +40,13 @@
 #include "unprecacheoptions.h"
 #include "logger.h"
 #include "config.h"
+#include "helper/shared.h"
 
 #include <unordered_map>
 #include <string>
 #include <memory>
 
 #include <functional>
-#pragma GCC diagnostic warning "-Wzero-as-null-pointer-constant"
 
 class Module
 {
@@ -67,7 +67,7 @@ private:
 		if(result != mapsEnds_[mapType])
 		{
 #ifdef _DEBUG
-			logger_->debug(std::string(__FUNCTION__) + " Match. " + path + " -> " + result->first);
+			logger_->debug(FNAME + " Match. " + path + " -> " + result->first);
 #endif
 			lastHitPoint_ = result->second;
 			return true;

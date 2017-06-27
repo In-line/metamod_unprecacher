@@ -31,8 +31,10 @@
  */
 
 #include "unprecacheoptions.h"
+
 #include <stdexcept>
 #include <tuple>
+
 bool UnprecacheOptions::replace() const
 {
 	return replace_;
@@ -103,7 +105,7 @@ void UnprecacheOptions::setDeleteEntity(bool deleteEntity)
 	deleteEntity_ = deleteEntity;
 }
 
-UnprecacheOptions UnprecacheOptions::analyzeBitSetAlphabitePattern(std::string pattern)
+UnprecacheOptions UnprecacheOptions::analyzeBitSetAlphabetPattern(std::string pattern)
 {
 	// a - delete entity
 	// b - not delete human entities

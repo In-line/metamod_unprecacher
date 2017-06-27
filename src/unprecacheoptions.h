@@ -37,10 +37,10 @@
 
 class UnprecacheOptions
 {
-bool deleteEntity_;
-bool notDeleteHuman_;
-bool replace_;
-std::string replacedPath_;
+	bool deleteEntity_;
+	bool notDeleteHuman_;
+	bool replace_;
+	std::string replacedPath_;
 public:
 	UnprecacheOptions();
 	bool operator ==(const UnprecacheOptions &obj) const;
@@ -58,7 +58,7 @@ public:
 	const std::string& replacedPath() const;
 	void setReplacedPath(const std::string &replacedPath);
 
-	static UnprecacheOptions analyzeBitSetAlphabitePattern(std::string pattern);
+	static UnprecacheOptions analyzeBitSetAlphabetPattern(std::string pattern);
 
 	bool isNotDefault() const;
 

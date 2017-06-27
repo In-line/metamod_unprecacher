@@ -35,6 +35,7 @@
 
 #include <cxxtest/TestSuite.h>
 #include "../src/config.h"
+
 class TestConfig : public CxxTest::TestSuite
 {
 private:
