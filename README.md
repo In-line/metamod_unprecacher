@@ -5,11 +5,7 @@ Blocks precache & resource usage
 ## Compilation
 cmake, boost, gcc, g++ packages may be required.
 <pre>
-sudo apt-get install libboost-dev cxxtest cmake gcc g++ # gcc > 4.8 required
-sudo apt-get install gcc-multilib g++-multilib libc6-dev-i386 libc6-i386 # If cross compiling from 64 bit linux  
-sed -i '/#define C_DLLEXPORT/c\//#define C_DLLEXPORT' third_party/metamod-hl1/metamod/osdep.h # Patch osdep.h
-cmake .
-make -j$((2 * `getconf _NPROCESSORS_ONLN`)) # Multicore build
+./build.sh # Debian/Ubuntu build script
 </pre>
 
 ## Installation
