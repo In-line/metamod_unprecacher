@@ -17,7 +17,8 @@ add_subdirectory(test)
 file(GLOB_RECURSE SOURCE_FILES ${SRC_DIR}/*.h ${SRC_DIR}/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${SOURCE_FILES})
-set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32 -O2 -flto -static-libstdc++" LINK_FLAGS "-m32 -fwhole-program -static-libstdc++")
+set(FLAGS "-m32 -O2 -fvisibility=hidden -flto -static-libstdc++")
+set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS ${FLAGS} LINK_FLAGS ${FLAGS})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
 
 add_library(${PROJECT_NAME}_static STATIC ${SRC_LIST} ${SOURCE_FILES})
