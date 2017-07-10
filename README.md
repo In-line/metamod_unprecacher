@@ -5,7 +5,7 @@ Blocks precache & resource usage
 ## Compilation
 cmake, boost, gcc, g++ packages may be required.
 <pre>
-./build.sh # Debian/Ubuntu build script
+./build.bash # Debian/Ubuntu build script
 </pre>
 
 ## Installation

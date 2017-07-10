@@ -124,8 +124,8 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	pluginDirPath = new std::string();
 	mapName = new std::string();
 	memset(&moduleFunctions[0], false, sizeof(ModuleFunctions) * sizeof(moduleFunctions[0]));
-	*pluginDirPath = GET_PLUGIN_PATH(PLID);
 
+	*pluginDirPath = GET_PLUGIN_PATH(PLID);
 	{
 		size_t lastSlash;
 		if( ( lastSlash = pluginDirPath->find_last_of("/") ) != std::string::npos )
@@ -156,9 +156,9 @@ inline void handleUnprecacheOptions(edict_t *eEnt, std::function<void(const char
 	const UnprecacheOptions &options = module->getLastHitPoint();
 	if(options.isNotDefault())
 	{
-		if(options.deleteEntity())
+		if(options.deleteEntity() && eEnt)
 		{
-			if(33>ENTINDEX(eEnt) || !options.notDeleteHuman())
+			if(33 > ENTINDEX(eEnt) || !options.notDeleteHuman())
 				eEnt->v.flags = eEnt->v.flags | FL_KILLME;
 		}
 		else if(options.replace())
@@ -172,7 +172,6 @@ void loadConfiguration()
 {
 	*mapName = std::string(STRING(gpGlobals->mapname));
 	mkdir((*pluginDirPath + "/" + "logs").c_str(), 0700);
-
 	{
 		memset(&moduleFunctions[0], false, sizeof(ModuleFunctions) * sizeof(moduleFunctions[0]));
 		module->loadConfig(*configPath);
@@ -350,7 +349,12 @@ int pfnModelIndex(const char *szModel)
 {
 	if(moduleFunctions[(std::size_t)ModuleFunctions::MODEL_INDEXF] && module->checkModel(std::string(szModel)))
 	{
-		RETURN_META_VALUE(MRES_SUPERCEDE, FALSE);
+		int modelIndex = 0;
+		handleUnprecacheOptions(nullptr,[&](const char* newPath)
+		{
+			modelIndex = MODEL_INDEX(newPath);
+		});
+		RETURN_META_VALUE(MRES_SUPERCEDE, modelIndex);
 	}
 	RETURN_META_VALUE(MRES_IGNORED, FALSE);
 }
@@ -387,7 +391,6 @@ void pfnServerDeactivate()
 {
 	if (!g_calledSpawn)
 		RETURN_META(MRES_IGNORED);
-
 
 	g_calledSpawn = false;
 
