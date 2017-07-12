@@ -17,8 +17,13 @@ add_subdirectory(test)
 file(GLOB_RECURSE SOURCE_FILES ${SRC_DIR}/*.h ${SRC_DIR}/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${SOURCE_FILES})
+
 set(FLAGS "-m32 -O2 -mtune=generic -fvisibility=hidden -flto -fPIC")
-set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${FLAGS} -fdata-sections -ffunction-sections" LINK_FLAGS "${FLAGS} -static-libgcc -static-libstdc++ -s -Wl,--version-script=${CMAKE_SOURCE_DIR}/version_script.lds -Wl,--gc-sections")
+set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${FLAGS} -fdata-sections -ffunction-sections")
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${FLAGS} -static-libgcc -static-libstdc++ -s -Wl,--version-script=${CMAKE_SOURCE_DIR}/version_script.lds -Wl,--gc-sections")
+
+set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
+set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX "_i386.so")
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
 
