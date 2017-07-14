@@ -7,8 +7,6 @@ then
 	sudo apt-get install --no-install-recommends -y gcc-multilib g++-multilib libc6-dev-i386 libc6-i386  
 fi
 
-sed -i '/#define C_DLLEXPORT/c\//#define C_DLLEXPORT' third_party/metamod-hl1/metamod/osdep.h # Patch osdep.h
-
 export CC=gcc
 export CXX=g++
 

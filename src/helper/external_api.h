@@ -5,7 +5,6 @@
 #ifndef CXXTEST_RUNNING // cxxtest generated runner.cpp file for some reason creates error.
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
-		#define C_DLLEXPORT extern "C" __attribute__ ((visibility ("default")))
 		#include <extdll.h>
 		#include <meta_api.h>
 	#pragma GCC diagnostic pop
