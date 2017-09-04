@@ -18,7 +18,7 @@ file(GLOB_RECURSE SOURCE_FILES ${SRC_DIR}/*.h ${SRC_DIR}/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${SOURCE_FILES})
 
-set(FLAGS "-m32 -O2 -mtune=generic -fvisibility=hidden -flto -fPIC")
+set(FLAGS "-m32 -O2 -fvisibility=hidden -flto -fPIC")
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${FLAGS} -fdata-sections -ffunction-sections")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${FLAGS} -static-libgcc -static-libstdc++ -s -Wl,--version-script=${CMAKE_SOURCE_DIR}/version_script.lds -Wl,--gc-sections")
 
