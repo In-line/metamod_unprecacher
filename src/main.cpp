@@ -74,7 +74,6 @@ meta_globals_t *gpMetaGlobals;
 gamedll_funcs_t *gpGamedllFuncs;
 mutil_funcs_t *gpMetaUtilFuncs;
 
-std::string *listPath;
 std::string *configPath;
 std::string *pluginDirPath;
 std::string *mapName;
@@ -119,7 +118,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 	gpGamedllFuncs = pGamedllFuncs;
 
-	listPath = new std::string();
 	configPath = new std::string();
 	pluginDirPath = new std::string();
 	mapName = new std::string();
@@ -134,7 +132,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 		}
 	}
 
-	*listPath = *pluginDirPath + "/" + "list.ini";
 	*configPath = *pluginDirPath + "/" + "config.ini";
 
 	module = new Module();
@@ -145,7 +142,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME, PL_UNLOAD_REASON)
 {
 	delete module;
-	delete listPath;
 	delete configPath;
 	delete pluginDirPath;
 	delete mapName;
@@ -214,55 +210,56 @@ void loadConfiguration()
 		}
 	});
 
-	module->clearLists();
-	module->loadLists(*listPath);
+	auto traverseMapDirectory = [&](std::string mapDirPath, std::function<void(const std::string &path)> onFileFound) {
+		DIR* mapsDir = opendir(mapDirPath.c_str()); // Try to open directory
 
-	DIR* mapsDir = nullptr;
-	std::string mapDirPath = *pluginDirPath + "/" + "maps";
-
-	mapsDir = opendir(mapDirPath.c_str()); // Try to open directory
-
-	if (!mapsDir && ENOENT == errno) // If it is no directory, create one
-	{
-		if(mkdir(mapDirPath.c_str(), 0700) == 0) // If creation successful reopen it
+		if (!mapsDir && ENOENT == errno) // If it is no directory, create one
 		{
-			mapsDir = opendir(mapDirPath.c_str());
-		}
-	}
-
-
-	if(mapsDir)
-	{
-		struct dirent *dirEnt;
-
-		const std::string prefix = "prefix-";
-		while ((dirEnt = readdir(mapsDir)) != NULL)
-		{
-			struct stat sb;
-			const std::string currentFileName = dirEnt->d_name;
-			const std::string currentFile = mapDirPath + "/" + currentFileName;
-			if(stat(currentFile.c_str(), &sb) == 0 && !S_ISDIR(sb.st_mode)) // Check if path is file
+			if (mkdir(mapDirPath.c_str(), 0700) == 0) // If creation successful reopen it
 			{
-				if(starts_with(currentFileName, prefix))
-				{
-					std::string mapPrefix;
-					try
-					{
-						mapPrefix = currentFileName.substr(prefix.size(), currentFileName.size() - (prefix.size() + /*.ini*/4));
-					} catch (std::exception&) { }
-					if(starts_with(*mapName, mapPrefix))
-					{
-						module->loadLists(currentFile);
-					}
-				}
-				else if(currentFileName == (*mapName + ".ini"))
-				{
-					module->loadLists(currentFile);
-				}
+				mapsDir = opendir(mapDirPath.c_str());
 			}
 		}
-		closedir(mapsDir);
-	}
+
+		if (mapsDir) {
+			struct dirent *dirEnt;
+
+			const std::string prefix = "prefix-";
+			while ((dirEnt = readdir(mapsDir)) != NULL) {
+				struct stat sb;
+				const std::string currentFileName = dirEnt->d_name;
+				const std::string currentFile = mapDirPath + "/" + currentFileName;
+				if (stat(currentFile.c_str(), &sb) == 0 && !S_ISDIR(sb.st_mode)) // Check if path is file
+				{
+					if (starts_with(currentFileName, prefix)) {
+						std::string mapPrefix;
+						try {
+							mapPrefix = currentFileName.substr(prefix.size(), currentFileName.size() - (prefix.size() + /*.ini*/4));
+						} catch (std::exception &) {}
+						if (starts_with(*mapName, mapPrefix)) {
+							onFileFound(currentFile);
+						}
+					} else if (currentFileName == (*mapName + ".ini")) {
+						onFileFound(currentFile);
+					}
+				}
+			}
+			closedir(mapsDir);
+		}
+	};
+
+	// Main lists
+	module->clearLists();
+	module->loadLists(*pluginDirPath + "/list.ini");
+	traverseMapDirectory(*pluginDirPath + "/maps", [](const std::string &path) {
+		module->loadLists(path);
+	});
+
+	// White lists
+	module->loadWhiteList(*pluginDirPath + "/whitelist.ini");
+	traverseMapDirectory(*pluginDirPath + "/whitelist_maps", [](const std::string &path) {
+		module->loadWhiteList(path);
+	});
 }
 
 void pfnSetModel(edict_t *eEnt, const char* szModel)

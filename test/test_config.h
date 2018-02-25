@@ -67,28 +67,21 @@ public:
 		config.readLine("test_option_int =     13");
 		config.readLine("test_option_string = NotDefault");
 
-
-
 		TS_ASSERT_EQUALS(config.getOption("test_option_bool").first,Config::OptionType::Boolean);
 		TS_ASSERT_EQUALS(boost::get<bool>(config.getOption("test_option_bool").second),true);
 
 		TS_ASSERT_EQUALS(config.getOption("test_option_string").first,Config::OptionType::String);
-		TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second),
-							"NotDefault");
+		TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second), "NotDefault");
 
 
 		TS_ASSERT_EQUALS(config.getOption("test_option_int").first,Config::OptionType::Integer);
-		TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second),
-							13);
+		TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second), 13);
 
 		config.resetOptionsToDefaults();
 
-		TS_ASSERT_EQUALS(boost::get<bool>(config.getOption("test_option_bool").second),
-										 false);
-		TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second),
-							"Default");
-		TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second),
-							0);
+		TS_ASSERT_EQUALS(boost::get<bool>(config.getOption("test_option_bool").second), false);
+		TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second), "Default");
+		TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second), 0);
 	}
 
 	void test_setOption()
@@ -103,12 +96,10 @@ public:
 		TS_ASSERT_EQUALS(boost::get<bool>(config.getOption("test_option_bool").second), false);
 
 		TS_ASSERT(config.setOption("test_option_string", "MbDefault"));
-		TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second),
-							"MbDefault");
+		TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second), "MbDefault");
 
 		TS_ASSERT(config.setOption("test_option_int", 5));
-		TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second),
-							5);
+		TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second), 5);
 
 		TS_ASSERT(!config.setOption("test_option_string23", "MbDefault"));
 		TS_ASSERT(!config.setOption("test", "MbDefault"));
@@ -129,10 +120,8 @@ public:
 			config.resetOptionsToDefaults();
 
 			TS_ASSERT_EQUALS(boost::get<bool>(config.getOption("test_option_bool").second),false);
-			TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second),
-								"Default");
-			TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second),
-								0);
+			TS_ASSERT_EQUALS(boost::get<std::string>(config.getOption("test_option_string").second), "Default");
+			TS_ASSERT_EQUALS(boost::get<int>(config.getOption("test_option_int").second), 0);
 	}
 
 	void test_deleteOption()

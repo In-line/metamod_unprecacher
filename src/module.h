@@ -85,6 +85,8 @@ private:
 
 #define LOGGER_VERBOSITY "logger_verbosity"
 #define LOGGER_OUTPUT "logger_output"
+
+	void loadListFromFile(const std::string &path, std::function<void(const std::string&)> onLineRead);
 public:
 	Module(const Logger::OutputType &outputType = Logger::OutputType::NoOutput);
 	Module(const Module&) = delete;
@@ -100,8 +102,10 @@ public:
 	inline bool checkModel(const char* path) { return this->checkModel(std::string(path)); }
 	inline bool checkSound(const char* path) { return this->checkSound(std::string(path)); }
 
-	bool readLine(const std::string &lineRef);
+	bool readLine(std::string line);
 	void loadLists(const std::string &path);
+	void loadWhiteList(const std::string &path);
+
 	void clearLists();
 	void revalidateEnds();
 
@@ -127,7 +131,7 @@ public:
 	Config &getConfigRef();
 	void setConfig(const Config &config);
 
-	void analyzeLoggerVerbosityString(const std::string &str);
+	void analyzeLoggerStringPattern(const std::string &str);
 };
 
 #endif // MODULE_H

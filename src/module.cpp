@@ -37,6 +37,9 @@
 #include <fstream>
 #include <utility>
 
+#include <map>
+#include <forward_list>
+
 std::shared_ptr<Logger> Module::getLogger() const
 {
 	return logger_;
@@ -67,7 +70,7 @@ void Module::setConfig(const Config &config)
 	config_ = config;
 }
 
-void Module::analyzeLoggerVerbosityString(const std::string &str)
+void Module::analyzeLoggerStringPattern(const std::string &str)
 {
 	std::size_t categoryStart = static_cast<std::size_t>(Logger::CategoryType::Debug);
 	std::size_t categoryMax = static_cast<std::size_t>(Logger::CategoryType::LastElement) + 1;
@@ -100,96 +103,89 @@ Module::Module(const Logger::OutputType &outputType)
 	logger_->setOutputType(Logger::OutputType::Both);
 }
 
-bool Module::readLine(const std::string &lineRef)
+bool Module::readLine(std::string line)
 {
-
-	const std::unordered_map<std::string, MAP> extensions =
-	{
-		{".mdl", MAP_MODELS},
-		{".spr", MAP_SPRITES},
-		{".wav", MAP_SOUNDS}
-	};
-
-	const std::string extensionPrefixes[MAP_SIZE] =
-	{
-		"models/", // MAP_MODELS
-		"sprites/", // MAP_SPRITES
-		"sound/" // MAP_SOUNDS
-	};
-
-	std::vector<std::string> tokens;
-	std::string line = lineRef;
+	// Line has format: "SOME_PATH" "flags" "additional"
 
 	logger_->debug(FNAME + " Line raw text: " + line);
-
 	line = trim(removeComments(line));
 	logger_->debug(FNAME + " Line text after: " + line);
 
-	if(line.empty())
-	{
+	if (line.empty()) {
 		logger_->debug(FNAME + " Line is empty. Continue to next.");
 		return false;
 	}
-	tokens = parseString(line, true);
-	UnprecacheOptions options;
+
+	std::vector<std::string> tokens = parseString(line, true);
 	std::string path = tokens[0];
 
 	std::string extension;
 	try {
-		// Why find? We know, that extensions have only 4 symbols at the end
+		// We know, that extensions have only 4 symbols at the end
 		// Template: ".***"
 		extension = path.substr(path.size() - 4, std::string::npos);
-	} catch (std::out_of_range) {
+	}
+	catch (std::out_of_range) {
 		logger_->error(FNAME + " Cannot find extension. Continue.");
 		return false;
 	}
 
-	MAP currentMapType = MAP_MODELS;
+	const std::map<std::string, MAP> extensions =
+		{
+			{".mdl", MAP_MODELS},
+			{".spr", MAP_SPRITES},
+			{".wav", MAP_SOUNDS}
+		};
 
+	MAP currentMapType = MAP_MODELS;
 	try {
 		currentMapType = extensions.at(extension);
-	} catch (std::exception&) {
+	}
+	catch (std::out_of_range &) {
 		logger_->error(FNAME + " Unrecognized extension. Continue");
 		return false;
 	}
 
-	switch(currentMapType)
-	{
+	const std::string extensionPrefixes[MAP_SIZE] =
+		{
+			"models/", // MAP_MODELS
+			"sprites/", // MAP_SPRITES
+			"sound/" // MAP_SOUNDS
+		};
+
+	switch (currentMapType) {
 		case MAP_SOUNDS:
-			if(starts_with(path, extensionPrefixes[currentMapType])) // Remove "sound/"
+			if (starts_with(path, extensionPrefixes[currentMapType])) // Remove "sound/"
 				path = path.substr(extensionPrefixes[currentMapType].size(), std::string::npos);
 			break;
 		default:
-			if(!starts_with(path, extensionPrefixes[currentMapType]))
+			if (!starts_with(path, extensionPrefixes[currentMapType]))
 				path = extensionPrefixes[currentMapType] + path;
 			break;
 	}
-	
+
+	UnprecacheOptions options;
+	if (tokens.size() > 1)
 	{
-		auto size = tokens.size();
-		if(size > 1)
-		{
-			try {
-				options = UnprecacheOptions::analyzeBitSetAlphabetPattern(tokens[1]);
-			} catch (std::exception &e) {
-				logger_->error(FNAME + " Exception when reading alphabet pattern " + e.what());
-				logger_->error(FNAME + " Reseting unprecache options");
-				options = UnprecacheOptions();
-			}
+		try {
+			options = UnprecacheOptions::stringPatternToOptions(tokens[1]);
+		}
+		catch (std::exception &e) {
+			logger_->error(FNAME + " Exception when reading alphabet pattern " + e.what());
+			logger_->error(FNAME + " Resetting unprecache options");
+			options = UnprecacheOptions();
+		}
 
-			if(options.replace())
-			{
-				if(size > 2)
-					options.setReplacedPath(tokens[2]);
-				else
-				{
-					logger_->error(FNAME + " Can not find replace path, disabling replace function");
-					options.setReplace(false);
-				}
+		if (options.replace()) {
+			if (tokens.size() > 2)
+				options.setReplacedPath(tokens[2]);
+			else {
+				logger_->error(FNAME + " Can't find replace path, disabling replace function");
+				options.setReplace(false);
 			}
-
 		}
 	}
+
 	// Insert our job result
 	logger_->debug(FNAME + " Insert to mapType " + extensionPrefixes[currentMapType]);
 	maps_[currentMapType][path] = options;
@@ -198,12 +194,20 @@ bool Module::readLine(const std::string &lineRef)
 
 void Module::loadLists(const std::string &path)
 {
+	loadListFromFile(path, [this](const std::string &line) {
+		this->readLine(line);
+	});
+	this->revalidateEnds();
+}
+
+void Module::loadListFromFile(const std::string &path, std::function<void(const std::string &)> onLineRead)
+{
 	std::fstream inputFile;
 	{
 		logger_->debug(FNAME + " Try to open " + path);
 		inputFile.open (
-		      path,
-		      std::ios::in
+			path,
+			std::ios::in
 		);
 
 		if(!inputFile)
@@ -219,19 +223,44 @@ void Module::loadLists(const std::string &path)
 		}
 	}
 	{
-		// Line has format: "SOME_PATH" "flags" "additional"
 		logger_->debug(FNAME + " Start file reading");
 
 		std::string line;
 		while(getline(inputFile, line))
 		{
-			this->readLine(line);
+			onLineRead(line);
 		}
 		logger_->debug(FNAME + " Input file close");
 		inputFile.close();
 	}
+}
+
+void Module::loadWhiteList(const std::string &path)
+{
+	std::forward_list<std::string> whiteList;
+	loadListFromFile(path, [&whiteList, this](const std::string &line) {
+		std::vector<std::string> tokens = parseString(trim(removeComments(line)));
+
+		whiteList.push_front(tokens.front());
+		logger_->debug(FNAME + "loaded whitelist line " + line);
+
+		if(tokens.size() > 1) {
+			logger_->warning(FNAME + " Ignoring additional tokens for " + line);
+		}
+	});
+
+	for(const auto &line : whiteList) {
+		maps_[MAP_MODELS].erase(line);
+		maps_[MAP_SPRITES].erase(line);
+
+		const std::string sound = "sound/";
+		if(starts_with(line, sound)) {
+			maps_[MAP_SOUNDS].erase(line.substr(sound.size(), std::string::npos));
+		}
+	}
 	this->revalidateEnds();
 }
+
 
 void Module::clearLists()
 {
@@ -255,7 +284,7 @@ void Module::loadConfig(const std::string &path)
 
 void Module::updateSettings()
 {
-	analyzeLoggerVerbosityString(boost::get<std::string>(config_.getOption(LOGGER_VERBOSITY).second));
+	analyzeLoggerStringPattern(boost::get<std::string>(config_.getOption(LOGGER_VERBOSITY).second));
 	logger_->setOutputType(static_cast<Logger::OutputType>(boost::get<int>(config_.getOption(LOGGER_OUTPUT).second)));
 }
 
@@ -296,3 +325,4 @@ const UnprecacheOptions& Module::getLastHitPoint() const
 {
 	return lastHitPoint_;
 }
+

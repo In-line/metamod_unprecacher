@@ -58,7 +58,7 @@ public:
 	const std::string& replacedPath() const;
 	void setReplacedPath(const std::string &replacedPath);
 
-	static UnprecacheOptions analyzeBitSetAlphabetPattern(std::string pattern);
+	static UnprecacheOptions stringPatternToOptions(std::string pattern);
 
 	bool isNotDefault() const;
 

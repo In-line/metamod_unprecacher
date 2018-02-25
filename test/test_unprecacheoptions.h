@@ -13,17 +13,17 @@ public:
 		UnprecacheOptions options;
 
 		std::string testPattern = "abc  ";
-		TS_ASSERT_THROWS_NOTHING(UnprecacheOptions::analyzeBitSetAlphabetPattern(testPattern));
+		TS_ASSERT_THROWS_NOTHING(UnprecacheOptions::stringPatternToOptions(testPattern));
 
-		options = UnprecacheOptions::analyzeBitSetAlphabetPattern(testPattern);
+		options = UnprecacheOptions::stringPatternToOptions(testPattern);
 
 		TS_ASSERT_EQUALS(options.isNotDefault(), true);
 		TS_ASSERT_EQUALS(options.deleteEntity(), true);
 		TS_ASSERT_EQUALS(options.notDeleteHuman(), true);
 		TS_ASSERT_EQUALS(options.replace(), true);
-		TS_ASSERT_THROWS_ANYTHING(UnprecacheOptions::analyzeBitSetAlphabetPattern("jlgke3$%%^#@@!@#$%  "));
+		TS_ASSERT_THROWS_ANYTHING(UnprecacheOptions::stringPatternToOptions("jlgke3$%%^#@@!@#$%  "));
 
-		options = UnprecacheOptions::analyzeBitSetAlphabetPattern("  ");
+		options = UnprecacheOptions::stringPatternToOptions("  ");
 
 		TS_ASSERT_EQUALS(options.isNotDefault(), false);
 		TS_ASSERT_EQUALS(options.deleteEntity(), false);

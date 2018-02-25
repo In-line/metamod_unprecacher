@@ -105,7 +105,7 @@ void UnprecacheOptions::setDeleteEntity(bool deleteEntity)
 	deleteEntity_ = deleteEntity;
 }
 
-UnprecacheOptions UnprecacheOptions::analyzeBitSetAlphabetPattern(std::string pattern)
+UnprecacheOptions UnprecacheOptions::stringPatternToOptions(std::string pattern)
 {
 	// a - delete entity
 	// b - not delete human entities

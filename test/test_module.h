@@ -23,7 +23,7 @@ public:
 		TS_ASSERT(module.readLine("sprites/w_usp.spr abc models/v_knife_custom.something"));
 		TS_ASSERT(module.readLine("sound/w_usp.wav abc models/v_knife_custom.something"));
 		module.revalidateEnds();
-		UnprecacheOptions o = UnprecacheOptions::analyzeBitSetAlphabetPattern("abc");
+		UnprecacheOptions o = UnprecacheOptions::stringPatternToOptions("abc");
 		o.setReplacedPath("models/v_knife_custom.something");
 
 		TS_ASSERT(module.checkModel("models/w_usp.mdl"));
@@ -44,7 +44,7 @@ public:
 		TS_ASSERT(!module.readLine("test"));
 	}
 
-	void test_analyzeLoggerVerbosityString()
+	void test_analyzeLoggerStringPattern()
 	{
 		std::size_t categoryStart = static_cast<std::size_t>(Logger::CategoryType::Debug);
 		std::size_t categoryMax = static_cast<std::size_t>(Logger::CategoryType::CriticalError);
@@ -54,9 +54,9 @@ public:
 		std::string verbString;
 		for(char i = char(categoryStart); i<=char(categoryMax);++i)
 		{
-			verbString += 'a' + char(i);
+			verbString += 'a' + i;
 		}
-		module.analyzeLoggerVerbosityString(verbString);
+		module.analyzeLoggerStringPattern(verbString);
 
 		for(std::size_t i = categoryStart; i<=categoryMax;++i)
 		{
