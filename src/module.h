@@ -69,7 +69,7 @@ private:
 #ifdef _DEBUG
 			logger_->debug(FNAME + " Match. " + path + " -> " + result->first);
 #endif
-			lastHitPoint_ = result->second;
+			lastHitPoint_ = &result->second;
 			return true;
 		}
 		return false;
@@ -79,7 +79,7 @@ private:
 	UnprecacheMap::const_iterator mapsEnds_[MAP_SIZE];
 
 
-	UnprecacheOptions lastHitPoint_;
+	const UnprecacheOptions *lastHitPoint_;
 	std::shared_ptr<Logger> logger_;
 	Config config_;
 

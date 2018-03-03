@@ -38,6 +38,8 @@
 #include <fstream>
 #include <ctime>
 #include <iomanip>
+#include <sstream>
+
 Module* module = nullptr;
 
 #ifdef _WIN32
@@ -163,7 +165,7 @@ inline void handleUnprecacheOptions(edict_t *eEnt, std::function<void(const char
 		}
 	}
 }
-#include <sstream>
+
 void loadConfiguration()
 {
 	*mapName = std::string(STRING(gpGlobals->mapname));
@@ -315,15 +317,15 @@ int pfnPrecacheSound(const char* szSound)
 {
 	if(moduleFunctions[(std::size_t)ModuleFunctions::PRECACHE_SOUNDF] && module->checkSound(szSound))
 	{
-		RETURN_META_VALUE(MRES_SUPERCEDE, FALSE);
+		RETURN_META_VALUE(MRES_SUPERCEDE, 0);
 	}
-	RETURN_META_VALUE(MRES_IGNORED, FALSE);
+	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
 int pfnPrecacheModel(const char* szModel)
 {
 	if(!moduleFunctions[(std::size_t)ModuleFunctions::PRECACHE_MODELF])
-		RETURN_META_VALUE(MRES_IGNORED, false);
+		RETURN_META_VALUE(MRES_IGNORED, 0);
 
 	bool result = false;
 	switch(szModel[0])
@@ -335,11 +337,12 @@ int pfnPrecacheModel(const char* szModel)
 			result = module->checkSprite(std::string(szModel));
 			break;
 	}
-	if(result == true)
+
+	if(result)
 	{
-		RETURN_META_VALUE(MRES_SUPERCEDE, false);
+		RETURN_META_VALUE(MRES_SUPERCEDE, 0);
 	}
-	RETURN_META_VALUE(MRES_IGNORED, false);
+	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
 int pfnModelIndex(const char *szModel)
@@ -353,7 +356,7 @@ int pfnModelIndex(const char *szModel)
 		});
 		RETURN_META_VALUE(MRES_SUPERCEDE, modelIndex);
 	}
-	RETURN_META_VALUE(MRES_IGNORED, FALSE);
+	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
 
@@ -400,7 +403,9 @@ int pfnSpawn(edict_t*)
 	{
 		RETURN_META_VALUE(MRES_IGNORED, 0);
 	}
+
 	loadConfiguration();
+
 	for(short i = 1; i<=2; ++i)
 	{
 		auto &map = i==1 ? module->getModelsMap() : module->getSpritesMap();
@@ -419,13 +424,13 @@ int pfnSpawn(edict_t*)
 		{
 			if(pairValue.second.replace())
 			{
-				std::string replacedPath;
-				{
-					const std::string &originalRPath = pairValue.second.replacedPath();
-					const std::string sound = "sound/";
-					replacedPath = originalRPath.substr( starts_with(originalRPath, sound) ? sound.size() : 0, std::string::npos);
+				const std::string sound = "sound/";
+				std::string replacePath = pairValue.second.replacedPath();
+				if(starts_with(replacePath, sound)) {
+					replacePath = replacePath.substr(sound.size(), std::string::npos);
 				}
-				PRECACHE_SOUND((char*)STRING(ALLOC_STRING(replacedPath.c_str())));
+
+				PRECACHE_SOUND((char*)STRING(ALLOC_STRING(replacePath.c_str())));
 			}
 		}
 	}

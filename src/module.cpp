@@ -323,6 +323,6 @@ void Module::setSoundsMap(const Module::UnprecacheMap &soundsMap)
 
 const UnprecacheOptions& Module::getLastHitPoint() const
 {
-	return lastHitPoint_;
+	return *lastHitPoint_;
 }
 
