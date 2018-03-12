@@ -2,7 +2,7 @@
 #define EXTERNAL_API_H
 
 // This is some "hacky" way to avoid multiple "zero as null" errors in metamod and hlsdk headers
-#ifndef CXXTEST_RUNNING // cxxtest generated runner.cpp file for some reason creates error.
+#ifndef CXXTEST_RUNNING // cxxtest generated runner.cpp file for some reason causes compile time errors.
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 		#include <extdll.h>

@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2018 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -137,6 +137,6 @@ UnprecacheOptions UnprecacheOptions::stringPatternToOptions(std::string pattern)
 
 bool UnprecacheOptions::isNotDefault() const
 {
-	return 	deleteEntity_ || notDeleteHuman_ || replace_;
+	return deleteEntity_ || notDeleteHuman_ || replace_;
 }
 

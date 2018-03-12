@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2016 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2018 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -61,7 +61,7 @@ private:
 		MAP_SIZE = 3,
 	};
 
-	inline bool checkPathInMap(const std::string &path, MAP mapType)
+	inline HOT bool checkPathInMap(const std::string &path, MAP mapType)
 	{
 		const UnprecacheMap::const_iterator &result = maps_[mapType].find(path);
 		if(result != mapsEnds_[mapType])
@@ -78,7 +78,6 @@ private:
 	UnprecacheMap maps_[MAP_SIZE];
 	UnprecacheMap::const_iterator mapsEnds_[MAP_SIZE];
 
-
 	const UnprecacheOptions *lastHitPoint_;
 	std::shared_ptr<Logger> logger_;
 	Config config_;
@@ -94,13 +93,13 @@ public:
 	const Module& operator =(const Module&) = delete;
 	const Module&& operator =(const Module&&) = delete;
 
-	inline bool checkSprite(const std::string &path) { return checkPathInMap(path, MAP_SPRITES); }
-	inline bool checkModel(const std::string &path) { return checkPathInMap(path, MAP_MODELS); }
-	inline bool checkSound(const std::string &path){ return checkPathInMap(path, MAP_SOUNDS); }
+	inline HOT bool checkSprite(const std::string &path) { return checkPathInMap(path, MAP_SPRITES); }
+	inline HOT bool checkModel(const std::string &path) { return checkPathInMap(path, MAP_MODELS); }
+	inline HOT bool checkSound(const std::string &path){ return checkPathInMap(path, MAP_SOUNDS); }
 
-	inline bool checkSprite(const char* path) { return this->checkSprite(std::string(path)); }
-	inline bool checkModel(const char* path) { return this->checkModel(std::string(path)); }
-	inline bool checkSound(const char* path) { return this->checkSound(std::string(path)); }
+	inline HOT bool checkSprite(const char* path) { return this->checkSprite(std::string(path)); }
+	inline HOT bool checkModel(const char* path) { return this->checkModel(std::string(path)); }
+	inline HOT bool checkSound(const char* path) { return this->checkSound(std::string(path)); }
 
 	bool readLine(std::string line);
 	void loadLists(const std::string &path);
@@ -121,7 +120,7 @@ public:
 	const UnprecacheMap& getSoundsMap() const;
 	void setSoundsMap(const UnprecacheMap &soundsMap);
 
-	const UnprecacheOptions &getLastHitPoint() const;
+	const HOT UnprecacheOptions &getLastHitPoint() const;
 
 	std::shared_ptr<Logger> getLogger() const;
 	std::shared_ptr<Logger> &getLoggerRef();

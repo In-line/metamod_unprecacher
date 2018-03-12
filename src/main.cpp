@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2018 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
@@ -149,15 +149,16 @@ C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME, PL_UNLOAD_REASON)
 	delete mapName;
 	return(TRUE);
 }
-inline void handleUnprecacheOptions(edict_t *eEnt, std::function<void(const char*)> replaceFunction)
+inline HOT void handleUnprecacheOptions(edict_t *eEnt, const std::function<void(const char*)> &&replaceFunction)
 {
 	const UnprecacheOptions &options = module->getLastHitPoint();
-	if(options.isNotDefault())
+	if(unlikely(options.isNotDefault()))
 	{
-		if(options.deleteEntity() && eEnt)
+		if(likely(eEnt) && options.deleteEntity())
 		{
-			if(33 > ENTINDEX(eEnt) || !options.notDeleteHuman())
-				eEnt->v.flags = eEnt->v.flags | FL_KILLME;
+			auto entIndex = ENTINDEX(eEnt);
+			if(likely((entIndex > 33 && entIndex > 0) || !options.notDeleteHuman()))
+				eEnt->v.flags |= FL_KILLME;
 		}
 		else if(options.replace())
 		{
@@ -264,7 +265,7 @@ void loadConfiguration()
 	});
 }
 
-void pfnSetModel(edict_t *eEnt, const char* szModel)
+void HOT pfnSetModel(edict_t *eEnt, const char* szModel)
 {
 	bool result = false;
 	switch(szModel[0])
@@ -287,7 +288,7 @@ void pfnSetModel(edict_t *eEnt, const char* szModel)
 	RETURN_META(MRES_IGNORED);
 }
 
-void pfnEmitSound(edict_t *iEnt, int iChannel, const char *szSample, /*int*/float fVolume, float fAttenuation, int fFlags, int iPitch)
+void HOT pfnEmitSound(edict_t *iEnt, int iChannel, const char *szSample, /*int*/float fVolume, float fAttenuation, int fFlags, int iPitch)
 {
 	if(moduleFunctions[(std::size_t)ModuleFunctions::EMIT_SOUNDF] && module->checkSound(szSample))
 	{
@@ -300,7 +301,7 @@ void pfnEmitSound(edict_t *iEnt, int iChannel, const char *szSample, /*int*/floa
 	RETURN_META(MRES_IGNORED);
 }
 
-void pfnEmitAmbientSound(edict_t *iEnt, float *fPos, const char *szSample, float fVol, float fAttenuation, int fFlags, int iPitch)
+void HOT pfnEmitAmbientSound(edict_t *iEnt, float *fPos, const char *szSample, float fVol, float fAttenuation, int fFlags, int iPitch)
 {
 	if(moduleFunctions[(std::size_t)ModuleFunctions::EMIT_AMBIENT_SOUNDF] && module->checkSound(szSample))
 	{
@@ -313,7 +314,7 @@ void pfnEmitAmbientSound(edict_t *iEnt, float *fPos, const char *szSample, float
 	RETURN_META(MRES_IGNORED);
 }
 
-int pfnPrecacheSound(const char* szSound)
+int HOT pfnPrecacheSound(const char* szSound)
 {
 	if(moduleFunctions[(std::size_t)ModuleFunctions::PRECACHE_SOUNDF] && module->checkSound(szSound))
 	{
@@ -322,7 +323,7 @@ int pfnPrecacheSound(const char* szSound)
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
-int pfnPrecacheModel(const char* szModel)
+int HOT pfnPrecacheModel(const char* szModel)
 {
 	if(!moduleFunctions[(std::size_t)ModuleFunctions::PRECACHE_MODELF])
 		RETURN_META_VALUE(MRES_IGNORED, 0);
@@ -345,7 +346,7 @@ int pfnPrecacheModel(const char* szModel)
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }
 
-int pfnModelIndex(const char *szModel)
+int HOT pfnModelIndex(const char *szModel)
 {
 	if(moduleFunctions[(std::size_t)ModuleFunctions::MODEL_INDEXF] && module->checkModel(std::string(szModel)))
 	{

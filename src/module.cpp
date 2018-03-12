@@ -1,6 +1,6 @@
 /*
  * Ultimate Unprecacher
- * Copyright (c) 2017 Alik Aslanyan <cplusplus256@gmail.com>
+ * Copyright (c) 2018 Alik Aslanyan <cplusplus256@gmail.com>
  *
  *
  *
