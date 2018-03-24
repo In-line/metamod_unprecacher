@@ -1,6 +1,8 @@
 project(unprecacher)
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_CXX_STANDARD 17)
+
 # src
 set(THIRD_PARTY "${CMAKE_SOURCE_DIR}/third_party")
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
@@ -19,11 +21,10 @@ include_directories(${API_INCLUDE_PATH_LIST})
 # tests
 add_library(${PROJECT_NAME}_static STATIC ${SOURCE_FILES})
 set_target_properties(${PROJECT_NAME}_static PROPERTIES COMPILE_FLAGS "-m32 -O0" LINK_FLAGS "-m32 -O0")
-target_compile_features(${PROJECT_NAME}_static PRIVATE cxx_range_for)
 add_subdirectory(test)
 
 # main
-add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${SOURCE_FILES})
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 set(FLAGS "-m32 -O2 -fvisibility=hidden -flto -fPIC")
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES COMPILE_FLAGS
@@ -47,7 +48,6 @@ set_target_properties(
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX "_i386.so")
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
