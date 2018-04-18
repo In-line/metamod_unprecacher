@@ -39,6 +39,7 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <progdefs.h>
 
 Module* module = nullptr;
 
@@ -63,7 +64,7 @@ static META_FUNCTIONS gMetaFunctionTable = {
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,
 	"Ultimate Unprecacher",
-	"Beta 2.5.1",
+	"Beta 2.5.2",
 	"2016/05/18",
 	"Alik Aslanyan <cplusplus256@gmail.com>",
 	"https://github.com/in-line/metamod_unprecacher",
@@ -137,7 +138,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	*configPath = *pluginDirPath + "/" + "config.ini";
 
 	module = new Module();
-	module->getConfigRef().addOption(MODULE_CHECKS, Config::OptionType::String, "abcde");
+	module->getConfigMut().addOption(MODULE_CHECKS, Config::OptionType::String, "abcde");
 	return(TRUE);
 }
 
@@ -152,13 +153,20 @@ C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME, PL_UNLOAD_REASON)
 inline HOT void handleUnprecacheOptions(edict_t *eEnt, const std::function<void(const char*)> &&replaceFunction)
 {
 	const UnprecacheOptions &options = module->getLastHitPoint();
-	if(unlikely(options.isNotDefault()))
+	if(options.isNotDefault())
 	{
-		if(likely(eEnt) && options.deleteEntity())
+		if(likely(!FNullEnt(eEnt)) && options.deleteEntity())
 		{
 			auto entIndex = ENTINDEX(eEnt);
-			if(likely((entIndex > 33 && entIndex > 0) || !options.notDeleteHuman()))
+
+			if(unlikely(entIndex < 0)) {
+				return;
+			}
+
+			if(entIndex > gpGlobals->maxClients || !options.notDeleteHuman()) {
 				eEnt->v.flags |= FL_KILLME;
+			}
+
 		}
 		else if(options.replace())
 		{
@@ -169,16 +177,17 @@ inline HOT void handleUnprecacheOptions(edict_t *eEnt, const std::function<void(
 
 void loadConfiguration()
 {
-	*mapName = std::string(STRING(gpGlobals->mapname));
+	mapName->assign(STRING(gpGlobals->mapname));
+
 	mkdir((*pluginDirPath + "/" + "logs").c_str(), 0700);
 	{
 		memset(&moduleFunctions[0], false, sizeof(ModuleFunctions) * sizeof(moduleFunctions[0]));
 		module->loadConfig(*configPath);
-		std::string functionsStr = boost::get<std::string>(module->getConfigRef().getOption(MODULE_CHECKS).second);
+		std::string functionsStr = boost::get<std::string>(module->getConfig().getOption(MODULE_CHECKS).second);
 		for(auto &c : functionsStr)
 		{
 			constexpr std::size_t size = static_cast<std::size_t>(ModuleFunctions::LastElement);
-			if(c>='a' && std::size_t(c)<=('a'+size))
+			if(c >= 'a' && std::size_t(c) <= ('a' + size))
 			{
 				moduleFunctions[c - 'a'] = true;
 			}
@@ -414,7 +423,7 @@ int pfnSpawn(edict_t*)
 		{
 			if(pairValue.second.replace())
 			{
-				PRECACHE_MODEL((char*)STRING(ALLOC_STRING(pairValue.second.replacedPath().c_str())));
+				PRECACHE_MODEL(STRING(ALLOC_STRING(pairValue.second.replacedPath().c_str())));
 			}
 		}
 	}
@@ -431,7 +440,7 @@ int pfnSpawn(edict_t*)
 					replacePath = replacePath.substr(sound.size(), std::string::npos);
 				}
 
-				PRECACHE_SOUND((char*)STRING(ALLOC_STRING(replacePath.c_str())));
+				PRECACHE_SOUND(STRING(ALLOC_STRING(replacePath.c_str())));
 			}
 		}
 	}

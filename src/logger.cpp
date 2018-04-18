@@ -101,22 +101,22 @@ bool Logger::log(const Logger::CategoryType &category, const std::string &str) c
 	switch (category)
 	{
 		case Logger::CategoryType::Debug:
-			endMessage="Debug: ";
+			endMessage = "Debug: ";
 			break;
 		case Logger::CategoryType::Info:
-			endMessage="Info: ";
+			endMessage = "Info: ";
 			break;
 		case Logger::CategoryType::Warning:
-			endMessage="Warning: ";
+			endMessage = "Warning: ";
 			break;
 		case Logger::CategoryType::Error:
-			endMessage="Error: ";
+			endMessage = "Error: ";
 			break;
 		case Logger::CategoryType::CriticalError:
-			endMessage="Critical error: ";
+			endMessage = "Critical error: ";
 			break;
 	}
-	endMessage+=str;
+	endMessage += str;
 
 	switch(outputType_)
 	{

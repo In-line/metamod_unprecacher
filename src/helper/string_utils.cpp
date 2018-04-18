@@ -35,10 +35,10 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
+
 std::vector<std::string> parseString(const std::string &inputString, bool removeQuotes/*=true*/, bool anySpaceCharacters/*=true*/) noexcept
 {
 	std::vector<std::string> returnVector;
-
 
 	auto start = inputString.begin();
 	auto end = inputString.end();
@@ -59,7 +59,7 @@ std::vector<std::string> parseString(const std::string &inputString, bool remove
 			case '"': case '\'':
 			{
 				if(!removeQuotes)
-					insertString+=*index;
+					insertString += *index;
 
 				if(status == PARSING_STATUS::PARSING_QUOTE)
 				{
@@ -78,7 +78,7 @@ std::vector<std::string> parseString(const std::string &inputString, bool remove
 						(!anySpaceCharacters && *index == ' '))
 				{
 					if(status == PARSING_STATUS::PARSING_QUOTE)
-						insertString+=*index;
+						insertString += *index;
 					else if(status == PARSING_STATUS::PARSING_STARTED)
 					{
 						returnVector.push_back(insertString);
@@ -88,7 +88,7 @@ std::vector<std::string> parseString(const std::string &inputString, bool remove
 				}
 				else
 				{
-					insertString+=*index;
+					insertString += *index;
 					if(status != PARSING_STATUS::PARSING_QUOTE)
 						status = PARSING_STATUS::PARSING_STARTED;
 				}
@@ -165,12 +165,10 @@ std::string trim(const std::string &str) noexcept
 
 	std::string::size_type lastNonWhiteSpace = str.size();
 
+	auto crend = str.crend();
+	for(auto it = str.crbegin(); it != crend && std::isspace(*it); ++it)
 	{
-		auto crend = str.crend();
-		for(auto it = str.crbegin(); it != crend && std::isspace(*it); ++it)
-		{
-			--lastNonWhiteSpace;
-		}
+		--lastNonWhiteSpace;
 	}
 
 	return str.substr(firstNonWhiteSpace, lastNonWhiteSpace - firstNonWhiteSpace);

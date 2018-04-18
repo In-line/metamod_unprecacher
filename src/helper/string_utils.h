@@ -30,12 +30,14 @@
  *
  */
 
+#pragma once
 #ifndef STRING_UTILS_H
 #define STRING_UTILS_H
 
 #include <vector>
 #include <string>
 #include <ctime>
+
 std::vector<std::string> parseString(const std::string &inputString, bool removeQuotes = true, bool anySpaceCharacters = true) noexcept;
 bool starts_with(const std::string &input,const std::string &prefix) noexcept;
 bool is_string_whitespaces(const std::string &input) noexcept;

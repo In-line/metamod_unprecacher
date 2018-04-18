@@ -30,6 +30,7 @@
  *
  */
 
+#pragma once
 #ifndef UNPRECACHEOPTIONS_H
 #define UNPRECACHEOPTIONS_H
 
@@ -58,7 +59,7 @@ public:
 	const std::string& replacedPath() const;
 	void setReplacedPath(const std::string &replacedPath);
 
-	static UnprecacheOptions stringPatternToOptions(std::string pattern);
+	static UnprecacheOptions stringPatternToOptions(const std::string &pattern);
 
 	bool isNotDefault() const;
 

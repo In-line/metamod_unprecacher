@@ -30,6 +30,7 @@
  *
  */
 
+#pragma once
 #ifndef MODULE_H
 #define MODULE_H
 
@@ -44,7 +45,6 @@
 
 #include <unordered_map>
 #include <string>
-#include <memory>
 
 #include <functional>
 
@@ -64,7 +64,7 @@ private:
 	inline HOT bool checkPathInMap(const std::string &path, MAP mapType)
 	{
 		const UnprecacheMap::const_iterator &result = maps_[mapType].find(path);
-		if(result != mapsEnds_[mapType])
+		if(result != maps_[mapType].end())
 		{
 #ifdef _DEBUG
 			logger_->debug(FNAME + " Match. " + path + " -> " + result->first);
@@ -76,10 +76,9 @@ private:
 	}
 
 	UnprecacheMap maps_[MAP_SIZE];
-	UnprecacheMap::const_iterator mapsEnds_[MAP_SIZE];
 
 	const UnprecacheOptions *lastHitPoint_;
-	std::shared_ptr<Logger> logger_;
+	up::shared_ptr<Logger> logger_;
 	Config config_;
 
 #define LOGGER_VERBOSITY "logger_verbosity"
@@ -87,7 +86,7 @@ private:
 
 	void loadListFromFile(const std::string &path, std::function<void(const std::string&)> onLineRead);
 public:
-	Module(const Logger::OutputType &outputType = Logger::OutputType::NoOutput);
+	explicit Module(const Logger::OutputType &outputType = Logger::OutputType::NoOutput);
 	Module(const Module&) = delete;
 	Module(const Module&&) = delete;
 	const Module& operator =(const Module&) = delete;
@@ -106,7 +105,6 @@ public:
 	void loadWhiteList(const std::string &path);
 
 	void clearLists();
-	void revalidateEnds();
 
 	void loadConfig(const std::string &path);
 	void updateSettings();
@@ -122,12 +120,13 @@ public:
 
 	const HOT UnprecacheOptions &getLastHitPoint() const;
 
-	std::shared_ptr<Logger> getLogger() const;
-	std::shared_ptr<Logger> &getLoggerRef();
-	void setLogger(const std::shared_ptr<Logger> &logger);
+	up::shared_ptr<Logger> getLogger() const;
+	up::shared_ptr<Logger> &getLoggerRef();
+	void setLogger(const up::shared_ptr<Logger> &logger);
 
-	Config getConfig() const;
-	Config &getConfigRef();
+	const Config &getConfig() const;
+	Config &getConfigMut();
+
 	void setConfig(const Config &config);
 
 	void analyzeLoggerStringPattern(const std::string &str);

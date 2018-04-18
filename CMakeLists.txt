@@ -25,7 +25,7 @@ add_subdirectory(test)
 
 # main
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
-set(FLAGS "-m32 -O2 -fvisibility=hidden -flto -fPIC")
+set(FLAGS "-m32 -O3 -pipe -fvisibility-inlines-hidden -fvisibility=hidden -flto -fPIC")
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES COMPILE_FLAGS
         "${FLAGS} \
@@ -33,7 +33,8 @@ set_target_properties(
         -ffunction-sections \
         -Wall \
         -Wextra \
-        -Wzero-as-null-pointer-constant \
+        -Werror \
+        -Wstrict-aliasing \
         -Weffc++ \
         -Wunknown-pragmas"
 )

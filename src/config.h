@@ -30,21 +30,23 @@
  *
  */
 
+#pragma once
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <memory>
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include <boost/variant.hpp>
 
+
 #include "logger.h"
+#include "helper/shared.h"
 
 class Config
 {
 public:
-	Config(const std::shared_ptr<Logger> &logger);
+	explicit Config(const up::shared_ptr<Logger> &logger);
 
 	enum class OptionType
 	{
@@ -55,7 +57,7 @@ public:
 	typedef boost::variant<bool, int, std::string>  VariantType;
 
 	bool addOption(const std::string &title, Config::OptionType type, const VariantType &defaultValue);
-	bool addOption(const std::string &title, OptionType type, const char* defaultValue);
+	bool addOption(const std::string &title, Config::OptionType type, const char* defaultValue);
 	bool addOption(const std::string &title, Config::OptionType type, const bool &defaultValue);
 	bool addOption(const std::string &title, Config::OptionType type, const int &defaultValue);
 	bool addOption(const std::string &title, Config::OptionType type, const std::string &defaultValue);
@@ -71,16 +73,16 @@ public:
 	void loadConfig(const std::string &path);
 	void resetOptionsToDefaults();
 	bool readLine(const std::string &lineRef);
-	std::shared_ptr<Logger> getLogger() const;
-	std::shared_ptr<Logger> &getLoggerRef();
-	void setLogger(const std::shared_ptr<Logger> &logger);
+	up::shared_ptr<Logger> getLogger() const;
+	up::shared_ptr<Logger> &getLoggerRef();
+	void setLogger(const up::shared_ptr<Logger> &logger);
 
 private:
 	bool checkVariant(const OptionType type, const VariantType &variant) const;
 	bool addOptionVariant(const std::string &title, OptionType type, const VariantType &defaultValue);
-	std::shared_ptr<Logger> logger_;
+	up::shared_ptr<Logger> logger_;
 	std::unordered_map<std::string, std::pair<Config::OptionType, VariantType>> options_;
-	std::vector<std::pair<std::string, VariantType>> defaultOptions_;
+	std::unordered_map<std::string, VariantType> defaultOptions_;
 
 	bool configWasLoadedOnce_;
 };

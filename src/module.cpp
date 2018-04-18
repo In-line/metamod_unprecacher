@@ -40,27 +40,27 @@
 #include <map>
 #include <forward_list>
 
-std::shared_ptr<Logger> Module::getLogger() const
+up::shared_ptr<Logger> Module::getLogger() const
 {
 	return logger_;
 }
 
-std::shared_ptr<Logger> &Module::getLoggerRef()
+up::shared_ptr<Logger> &Module::getLoggerRef()
 {
 	return logger_;
 }
 
-void Module::setLogger(const std::shared_ptr<Logger> &logger)
+void Module::setLogger(const up::shared_ptr<Logger> &logger)
 {
 	logger_ = logger;
 }
 
-Config Module::getConfig() const
+const Config &Module::getConfig() const
 {
 	return config_;
 }
 
-Config &Module::getConfigRef()
+Config &Module::getConfigMut()
 {
 	return config_;
 }
@@ -197,7 +197,6 @@ void Module::loadLists(const std::string &path)
 	loadListFromFile(path, [this](const std::string &line) {
 		this->readLine(line);
 	});
-	this->revalidateEnds();
 }
 
 void Module::loadListFromFile(const std::string &path, std::function<void(const std::string &)> onLineRead)
@@ -222,17 +221,16 @@ void Module::loadListFromFile(const std::string &path, std::function<void(const 
 			throw std::ios::failure("Cannot create/open file: " + path);
 		}
 	}
-	{
-		logger_->debug(FNAME + " Start file reading");
 
-		std::string line;
-		while(getline(inputFile, line))
-		{
-			onLineRead(line);
-		}
-		logger_->debug(FNAME + " Input file close");
-		inputFile.close();
+	logger_->debug(FNAME + " Start file reading");
+
+	std::string line;
+	while(getline(inputFile, line))
+	{
+		onLineRead(line);
 	}
+	logger_->debug(FNAME + " Input file close");
+	inputFile.close();
 }
 
 void Module::loadWhiteList(const std::string &path)
@@ -258,7 +256,6 @@ void Module::loadWhiteList(const std::string &path)
 			maps_[MAP_SOUNDS].erase(line.substr(sound.size(), std::string::npos));
 		}
 	}
-	this->revalidateEnds();
 }
 
 
@@ -267,13 +264,6 @@ void Module::clearLists()
 	maps_[MAP_MODELS].clear();
 	maps_[MAP_SPRITES].clear();
 	maps_[MAP_SOUNDS].clear();
-}
-
-void Module::revalidateEnds()
-{
-	mapsEnds_[MAP_MODELS] = maps_[MAP_MODELS].end();
-	mapsEnds_[MAP_SPRITES] = maps_[MAP_SPRITES].end();
-	mapsEnds_[MAP_SOUNDS] = maps_[MAP_SOUNDS].end();
 }
 
 void Module::loadConfig(const std::string &path)
@@ -296,7 +286,6 @@ const Module::UnprecacheMap& Module::getModelsMap() const
 void Module::setModelsMap(const Module::UnprecacheMap &modelsMap)
 {
 	maps_[MAP_MODELS] = modelsMap;
-	mapsEnds_[MAP_MODELS] = maps_[MAP_MODELS].end();
 }
 
 const Module::UnprecacheMap& Module::getSpritesMap() const
@@ -307,7 +296,6 @@ const Module::UnprecacheMap& Module::getSpritesMap() const
 void Module::setSpritesMap(const Module::UnprecacheMap &spritesMap)
 {
 	maps_[MAP_SPRITES] = spritesMap;
-	mapsEnds_[MAP_SPRITES] = maps_[MAP_SPRITES].end();
 }
 
 const Module::UnprecacheMap& Module::getSoundsMap() const
@@ -318,7 +306,6 @@ const Module::UnprecacheMap& Module::getSoundsMap() const
 void Module::setSoundsMap(const Module::UnprecacheMap &soundsMap)
 {
 	maps_[MAP_SOUNDS] = soundsMap;
-	mapsEnds_[MAP_SOUNDS] = maps_[MAP_SOUNDS].end();
 }
 
 const UnprecacheOptions& Module::getLastHitPoint() const

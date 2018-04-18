@@ -55,7 +55,6 @@ public:
 		TS_ASSERT(module.readLine("models/w_usp.mdl abc models/v_knife_custom.something"));
 		TS_ASSERT(module.readLine("sprites/w_usp.spr abc models/v_knife_custom.something"));
 		TS_ASSERT(module.readLine("sound/w_usp.wav abc models/v_knife_custom.something"));
-		module.revalidateEnds();
 		UnprecacheOptions o = UnprecacheOptions::stringPatternToOptions("abc");
 		o.setReplacedPath("models/v_knife_custom.something");
 

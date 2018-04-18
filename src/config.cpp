@@ -37,7 +37,7 @@
 #include <fstream>
 #include <algorithm>
 
-Config::Config(const std::shared_ptr<Logger> &logger)
+Config::Config(const up::shared_ptr<Logger> &logger)
 	:
 	logger_(logger),
 	options_(),
@@ -59,19 +59,10 @@ bool Config::addOption(const std::string &title, Config::OptionType type, const 
 
 bool Config::deleteOption(const std::string &title)
 {
+	bool hasSomethingToDelete = defaultOptions_.find(title) != defaultOptions_.end();
 	options_.erase(title);
-	auto end = defaultOptions_.end();
-	auto newEnd = std::remove_if(defaultOptions_.begin(), end, [&title](const decltype(defaultOptions_)::value_type &e) -> bool
-	{
-		if(e.first == title)
-			return true;
-		return false;
-	});
-	if(end == newEnd)
-		return false;
-
-	defaultOptions_.erase(newEnd, end);
-	return true;
+	defaultOptions_.erase(title);
+	return hasSomethingToDelete;
 }
 
 bool Config::addOption(const std::string &title, Config::OptionType type, const bool &defaultValue)
@@ -94,15 +85,13 @@ bool Config::addOptionVariant(const std::string &title, Config::OptionType type,
 	if(!checkVariant(type, defaultValue))
 		return false;
 
-	try {
-		options_.at(title);
-	}
-	catch (std::exception&) {
+	if(options_.find(title) != options_.end()) {
+		return false;
+	} else {
 		options_[title] = {type, defaultValue};
-		defaultOptions_.push_back({title , defaultValue});
+		defaultOptions_[title] = defaultValue;
 		return true;
 	}
-	return false;
 }
 
 std::pair<Config::OptionType, Config::VariantType> Config::getOption(const std::string &title) const
@@ -112,16 +101,16 @@ std::pair<Config::OptionType, Config::VariantType> Config::getOption(const std::
 
 bool Config::setOption(const std::string &title, const Config::VariantType &newValue)
 {
-	decltype(options_)::iterator position = options_.find(title);
+	auto position = options_.find(title);
 	if(position == options_.end())
 		return false;
 
-	const OptionType type = (*position).second.first;
+	const OptionType type = position->second.first;
 
 	if(!checkVariant(type, newValue))
 		return false;
 
-	(*position).second.second = newValue;
+	position->second.second = newValue;
 
 	return true;
 }
@@ -148,8 +137,7 @@ bool Config::setOption(const std::string &title, const std::string &newValue)
 
 void Config::loadConfig(const std::string &path)
 {
-	std::ifstream file;
-	file.open(path);
+	std::ifstream file(path);
 
 	if(!file)
 		file.open(path, std::ios::out | std::ios::in | std::ios::trunc);
@@ -172,17 +160,17 @@ void Config::loadConfig(const std::string &path)
 	file.close();
 }
 
-std::shared_ptr<Logger> Config::getLogger() const
+up::shared_ptr<Logger> Config::getLogger() const
 {
 	return logger_;
 }
 
-std::shared_ptr<Logger> &Config::getLoggerRef()
+up::shared_ptr<Logger> &Config::getLoggerRef()
 {
 	return logger_;
 }
 
-void Config::setLogger(const std::shared_ptr<Logger> &logger)
+void Config::setLogger(const up::shared_ptr<Logger> &logger)
 {
 	logger_ = logger;
 }
@@ -214,11 +202,9 @@ void Config::resetOptionsToDefaults()
 {
 	for(auto &curPair : defaultOptions_)
 	{
-		decltype (options_)::iterator position = options_.find(curPair.first);
-		(*position).second.second = curPair.second;
+		options_.find(curPair.first)->second.second = curPair.second;
 	}
 }
-
 
 bool Config::readLine(const std::string &lineRef)
 {
@@ -240,31 +226,38 @@ bool Config::readLine(const std::string &lineRef)
 	logger_->debug(FNAME + " Left right: " + left + " = " + right);
 	try
 	{
-		decltype(options_)::mapped_type &value = options_.at(left);
+		auto &value = options_.at(left);
 
 		const auto BooleanFunction = [&value, this](const std::string &checkString) -> bool
 		{
-			const auto assignBool = [&value, this](bool assignValue){ value.second = assignValue; };
-			const std::unordered_map<std::string, std::function<void()>> switchMap =
-			{{"true",std::bind(assignBool, true)},
-			{"1",std::bind(assignBool, true)},
-			{"yes",std::bind(assignBool, true)},
-			{"yeah",std::bind(assignBool, true)},
+			const auto assignBool = [&value](bool assignValue) {
+				value.second = assignValue;
+			};
 
-			{"false",std::bind(assignBool, false)},
-			{"0",std::bind(assignBool, false)},
-			{"no",std::bind(assignBool, false)},
-			{"mazdan",std::bind(assignBool, false)}};
+			const std::unordered_map<std::string, std::function<void()>> switchMap =
+			{
+				{"true", std::bind(assignBool, true) },
+				{"1", std::bind(assignBool, true) },
+				{"yes", std::bind(assignBool, true) },
+				{"yeah", std::bind(assignBool, true) },
+				{"false", std::bind(assignBool, false) },
+				{"0", std::bind(assignBool, false) },
+				{"no", std::bind(assignBool, false) },
+				{"mazdan", std::bind(assignBool, false) }
+			};
 
 			std::string localCopy;
+			localCopy.reserve(checkString.size());
+
 			std::transform(checkString.begin(), checkString.end(), std::back_inserter(localCopy), ::tolower);
-			try {
-				switchMap.at(localCopy)();
-			} catch (std::exception&) {
-				logger_->error(FNAME + " Exception occured. Return from BF");
+
+			auto it = switchMap.find(localCopy);
+			if(it != switchMap.end()) {
+				it->second();
+				return true;
+			} else {
 				return false;
 			}
-			return true;
 		};
 
 		switch (value.first)

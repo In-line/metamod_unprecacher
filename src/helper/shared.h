@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SHARED_H
 #define SHARED_H
 
@@ -15,6 +16,21 @@
 	#define COLD
 #endif
 
+#include <boost/smart_ptr/local_shared_ptr.hpp>
+#include <boost/smart_ptr/make_local_shared.hpp>
+
+namespace up
+{
+	template<typename T>
+	using shared_ptr = boost::local_shared_ptr<T>;
+
+	template<class T, class... Args>
+	inline auto make_shared(Args&&... args)
+	{
+		return boost::make_local_shared<T>(std::forward<Args>(args)...);
+	}
+
+}
 // Here we can put typedefs that shared by many files
 
 #endif // SHARED_H

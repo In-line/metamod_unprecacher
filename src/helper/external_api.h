@@ -1,3 +1,4 @@
+#pragma once
 #ifndef EXTERNAL_API_H
 #define EXTERNAL_API_H
 

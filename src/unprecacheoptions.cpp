@@ -105,13 +105,13 @@ void UnprecacheOptions::setDeleteEntity(bool deleteEntity)
 	deleteEntity_ = deleteEntity;
 }
 
-UnprecacheOptions UnprecacheOptions::stringPatternToOptions(std::string pattern)
+UnprecacheOptions UnprecacheOptions::stringPatternToOptions(const std::string &pattern)
 {
 	// a - delete entity
 	// b - not delete human entities
 	// c - replace
 	UnprecacheOptions returnOptions;
-	for(char& character : pattern)
+	for(char character : pattern)
 	{
 		switch(character)
 		{

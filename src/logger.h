@@ -30,10 +30,10 @@
  *
  */
 
+#pragma once
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <memory>
 #include <string>
 #include <functional>
 #include <bitset>
@@ -73,7 +73,7 @@ private:
 		return static_cast<std::size_t>(value);
 	}
 public:
-	Logger(const OutputType &outputType = OutputType::NoOutput);
+	explicit Logger(const OutputType &outputType = OutputType::NoOutput);
 
 	bool log(const CategoryType &category, const std::string &str) const noexcept;
 

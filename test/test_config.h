@@ -35,13 +35,14 @@
 
 #include <cxxtest/TestSuite.h>
 #include "../src/config.h"
+#include "../src/helper/shared.h"
 
 class TestConfig : public CxxTest::TestSuite
 {
 private:
-	std::shared_ptr<Logger> createLogger()
+	up::shared_ptr<Logger> createLogger()
 	{
-		auto logger = std::make_shared<Logger>();
+		auto logger = up::make_shared<Logger>();
 		logger->setCategoryDisplayed(Logger::CategoryType::CriticalError, true);
 		logger->setCategoryDisplayed(Logger::CategoryType::Error, true);
 		logger->setCategoryDisplayed(Logger::CategoryType::Warning, true);
@@ -131,12 +132,12 @@ public:
 		TS_ASSERT(!config.addOption("test_option_bool", Config::OptionType::Boolean, false));
 
 		TS_ASSERT(!config.deleteOption("test_option_mb1234"));
+		TS_ASSERT_THROWS_NOTHING(config.getOption("test_option_bool"));
 
 		TS_ASSERT(config.deleteOption("test_option_bool"));
 		TS_ASSERT_THROWS_ANYTHING(config.getOption("test_option_bool"));
 
 		TS_ASSERT(!config.deleteOption("test_option_bool"));
-
 	}
 };
 
