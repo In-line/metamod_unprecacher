@@ -36,22 +36,19 @@
 
 #include <string>
 #include <algorithm>
+#include <functional>
 
 
 #include "unprecacheoptions.h"
 #include "logger.h"
 #include "config.h"
 #include "helper/shared.h"
-
-#include <unordered_map>
-#include <string>
-
-#include <functional>
+#include "helper/fast_unordered_string_map.h"
 
 class Module
 {
 private:
-	typedef std::unordered_map<std::string, UnprecacheOptions> UnprecacheMap;
+	typedef up::fast_unordered_string_map<UnprecacheOptions> UnprecacheMap;
 	enum MAP
 	{
 		MAP_START = 0,
@@ -61,13 +58,12 @@ private:
 		MAP_SIZE = 3,
 	};
 
-	inline HOT bool checkPathInMap(const std::string &path, MAP mapType)
+	inline HOT bool checkPathInMap(const std::string_view &path, MAP mapType) noexcept
 	{
-		const UnprecacheMap::const_iterator &result = maps_[mapType].find(path);
-		if(result != maps_[mapType].end())
+		if(const auto &result = maps_[mapType].find(path); result != maps_[mapType].end())
 		{
 #ifdef _DEBUG
-			logger_->debug(FNAME + " Match. " + path + " -> " + result->first);
+			logger_->debug(FNAME + " Match. " + std::string(path) + " -> " + result->first);
 #endif
 			lastHitPoint_ = &result->second;
 			return true;
@@ -92,13 +88,9 @@ public:
 	const Module& operator =(const Module&) = delete;
 	const Module&& operator =(const Module&&) = delete;
 
-	inline HOT bool checkSprite(const std::string &path) { return checkPathInMap(path, MAP_SPRITES); }
-	inline HOT bool checkModel(const std::string &path) { return checkPathInMap(path, MAP_MODELS); }
-	inline HOT bool checkSound(const std::string &path){ return checkPathInMap(path, MAP_SOUNDS); }
-
-	inline HOT bool checkSprite(const char* path) { return this->checkSprite(std::string(path)); }
-	inline HOT bool checkModel(const char* path) { return this->checkModel(std::string(path)); }
-	inline HOT bool checkSound(const char* path) { return this->checkSound(std::string(path)); }
+	inline HOT bool checkSprite(const std::string_view &path) { return checkPathInMap(path, MAP_SPRITES); }
+	inline HOT bool checkModel(const std::string_view &path) { return checkPathInMap(path, MAP_MODELS); }
+	inline HOT bool checkSound(const std::string_view &path){ return checkPathInMap(path, MAP_SOUNDS); }
 
 	bool readLine(std::string line);
 	void loadLists(const std::string &path);

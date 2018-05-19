@@ -188,7 +188,7 @@ bool Module::readLine(std::string line)
 
 	// Insert our job result
 	logger_->debug(FNAME + " Insert to mapType " + extensionPrefixes[currentMapType]);
-	maps_[currentMapType][path] = options;
+	maps_[currentMapType].insert({path, options});
 	return true;
 }
 

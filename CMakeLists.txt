@@ -20,7 +20,7 @@ include_directories(${API_INCLUDE_PATH_LIST})
 
 # tests
 add_library(${PROJECT_NAME}_static STATIC ${SOURCE_FILES})
-set_target_properties(${PROJECT_NAME}_static PROPERTIES COMPILE_FLAGS "-m32 -O0" LINK_FLAGS "-m32 -O0")
+set_target_properties(${PROJECT_NAME}_static PROPERTIES COMPILE_FLAGS "-m32 -pipe -O0" LINK_FLAGS "-m32 -pipe -O0")
 add_subdirectory(test)
 
 # main
